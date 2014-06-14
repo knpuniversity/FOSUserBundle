@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" />
+        {% endblock %}
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="hero-unit">
+                <h1>FOSUserBundle FTW!</h1>
+                <p>This mini-project is all about getting started with FOSUSerBundle</p>
+            </div>
+
+            <div class="row">
+                <div class="span12">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+
+            <footer>
+                <p>&copy; Company {{ '' | date('Y') }}</p>
+            </footer>
+        </div>
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
