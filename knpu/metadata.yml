@@ -1,0 +1,21 @@
+title:  FOSUserBundle FTW!
+price:  0
+length: 13:15
+summary: |
+    Learn to install, configure, and master the most important parts of FOSUserBundle
+    in this screencast.
+
+    FOSUserBundle is the most popular Symfony bundle, and with good reason.
+    It comes packed with features for login, registration, forgot password
+    and a lot more. But it's also a big tool, and learning to master it will
+    go a long way to making the security system in your application great.
+illustration: fosuserbundle.png
+priority: 40
+tags:
+    - { name: php }
+
+chapters:
+    fos-user-bundle:
+        title:      FOSUserBundle
+        is_free:    true
+        length:     13:15
