@@ -9,6 +9,7 @@ summary: |
     and a lot more. But it's also a big tool, and learning to master it will
     go a long way to making the security system in your application great.
 illustration: fosuserbundle.png
+videoDownloadExtension: mov
 
 chapters:
     fos-user-bundle:
