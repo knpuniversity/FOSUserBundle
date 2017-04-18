@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Genus {{ genus.name }}{% endblock %}
+
+{% block body %}
+    <h2 class="genus-name">{{ genus.name }}</h2>
+
+    <div class="sea-creature-container">
+        <div class="genus-photo"></div>
+        <div class="genus-details">
+            <dl class="genus-details-list">
+                <dt>Subfamily:</dt>
+                <dd>{{ genus.subFamily.name }}</dd>
+                <dt>Known Species:</dt>
+                <dd>{{ genus.speciesCount|number_format }}</dd>
+                <dt>Fun Fact:</dt>
+                <dd>{{ genus.funFact|markdownify }}</dd>
+                <dt>Recent Notes</dt>
+                <dd>{{ recentNoteCount }}</dd>
+            </dl>
+        </div>
+    </div>
+    <div id="js-notes-wrapper"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+
+    <script type="text/babel" src="{{ asset('js/notes.react.js') }}"></script>
+    <script type="text/babel">
+        var notesUrl = '{{ path('genus_show_notes', {'name': genus.name}) }}';
+
+        ReactDOM.render(
+          <NoteSection url={notesUrl} />,
+          document.getElementById('js-notes-wrapper')
+        );
+    </script>
+{% endblock %}
