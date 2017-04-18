@@ -1,0 +1,16 @@
+diff --git a/app/config/config.yml b/app/config/config.yml
+index e57496a..738a56a 100644
+--- a/app/config/config.yml
++++ b/app/config/config.yml
+@@ -71,3 +71,11 @@ doctrine_cache:
+             type: %cache_type%
+             file_system:
+                 directory: %kernel.cache_dir%/markdown_cache
++
++fos_user:
++    db_driver: orm
++    firewall_name: main
++    user_class: AppBundle\Entity\User
++    from_email:
++        address: "hello@aquanote.com"
++        sender_name: "AquaNote Postman"

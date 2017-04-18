@@ -1,0 +1,35 @@
+{
+    "steps": [
+        {
+            "id": "start",
+            "name": "start",
+            "description": null
+        },
+        {
+            "id": "setup-install-bundle",
+            "name": "Setup: Install bundle",
+            "description": null
+        },
+        {
+            "id": "setup-user-entity",
+            "name": "Setup: User Entity",
+            "description": null
+        },
+        {
+            "id": "setup-basic-config",
+            "name": "Setup: Basic config",
+            "description": null
+        },
+        {
+            "id": "setup-user-migration",
+            "name": "Setup: User migration",
+            "description": null
+        },
+        {
+            "id": "setup-import-routes-basic-security-yml",
+            "name": "Setup: Import routes + basic security.yml",
+            "description": null
+        }
+    ],
+    "sha": "91e406db9c796aaf242fd2b928fa10c5ebd6a1a0"
+}

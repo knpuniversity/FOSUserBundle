@@ -1,0 +1,31 @@
+diff --git a/app/config/routing.yml b/app/config/routing.yml
+index e88b48e..4f76a89 100644
+--- a/app/config/routing.yml
++++ b/app/config/routing.yml
+@@ -6,3 +6,6 @@ homepage:
+     path: /
+     defaults:
+         _controller: AppBundle:Main:homepage
++
++fos_user:
++    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+diff --git a/app/config/security.yml b/app/config/security.yml
+index 8072372..7102e47 100644
+--- a/app/config/security.yml
++++ b/app/config/security.yml
+@@ -2,10 +2,13 @@
+ # http://symfony.com/doc/current/book/security.html
+ security:
+ 
++    encoders:
++        AppBundle\Entity\User: bcrypt
++
+     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+     providers:
+-        in_memory:
+-            memory: ~
++        fos_userbundle:
++            id: fos_user.user_provider.username
+ 
+     firewalls:
+         # disables authentication for assets and the profiler, adapt it according to your needs

@@ -1,0 +1,131 @@
+diff --git a/app/AppKernel.php b/app/AppKernel.php
+index d6fac03..9c91892 100644
+--- a/app/AppKernel.php
++++ b/app/AppKernel.php
+@@ -12,13 +12,14 @@ class AppKernel extends Kernel
+             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+             new Symfony\Bundle\TwigBundle\TwigBundle(),
+             new Symfony\Bundle\MonologBundle\MonologBundle(),
+-            //new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
++            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+ 
+             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
++            new FOS\UserBundle\FOSUserBundle(),
+ 
+             new AppBundle\AppBundle(),
+         );
+diff --git a/composer.json b/composer.json
+index 251233d..a30d4da 100644
+--- a/composer.json
++++ b/composer.json
+@@ -26,7 +26,8 @@
+         "sensio/framework-extra-bundle": "^3.0.2",
+         "incenteev/composer-parameter-handler": "^2.0",
+         "knplabs/knp-markdown-bundle": "^1.4",
+-        "doctrine/doctrine-migrations-bundle": "^1.1"
++        "doctrine/doctrine-migrations-bundle": "^1.1",
++        "friendsofsymfony/user-bundle": "^2.0"
+     },
+     "require-dev": {
+         "sensio/generator-bundle": "^3.0",
+diff --git a/composer.lock b/composer.lock
+index 521b8df..42a36dd 100644
+--- a/composer.lock
++++ b/composer.lock
+@@ -4,7 +4,7 @@
+         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+         "This file is @generated automatically"
+     ],
+-    "content-hash": "c14025000a1874e841dc1ce721a1fcac",
++    "content-hash": "13b873ab79e38361c707f7b33f341cf9",
+     "packages": [
+         {
+             "name": "composer/ca-bundle",
+@@ -970,6 +970,83 @@
+             "time": "2016-12-18T15:42:34+00:00"
+         },
+         {
++            "name": "friendsofsymfony/user-bundle",
++            "version": "v2.0.0",
++            "source": {
++                "type": "git",
++                "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
++                "reference": "2e0243e9e8a3ca0dab753fc5f2e79b4b3093ac9a"
++            },
++            "dist": {
++                "type": "zip",
++                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/2e0243e9e8a3ca0dab753fc5f2e79b4b3093ac9a",
++                "reference": "2e0243e9e8a3ca0dab753fc5f2e79b4b3093ac9a",
++                "shasum": ""
++            },
++            "require": {
++                "paragonie/random_compat": "^1 || ^2",
++                "php": "^5.5.9 || ^7.0",
++                "symfony/form": "^2.7 || ^3.0",
++                "symfony/framework-bundle": "^2.7 || ^3.0",
++                "symfony/security-bundle": "^2.7 || ^3.0",
++                "symfony/templating": "^2.7 || ^3.0",
++                "symfony/twig-bundle": "^2.7 || ^3.0",
++                "twig/twig": "^1.28 || ^2.0"
++            },
++            "conflict": {
++                "doctrine/doctrine-bundle": "<1.3",
++                "symfony/doctrine-bridge": "<2.7"
++            },
++            "require-dev": {
++                "doctrine/doctrine-bundle": "^1.3",
++                "friendsofphp/php-cs-fixer": "^1.11",
++                "phpunit/phpunit": "~4.8|~5.0",
++                "swiftmailer/swiftmailer": "^4.3 || ^5.0",
++                "symfony/console": "^2.7 || ^3.0",
++                "symfony/phpunit-bridge": "^2.7 || ^3.0",
++                "symfony/validator": "^2.7 || ^3.0",
++                "symfony/yaml": "^2.7 || ^3.0"
++            },
++            "type": "symfony-bundle",
++            "extra": {
++                "branch-alias": {
++                    "dev-master": "2.0.x-dev"
++                }
++            },
++            "autoload": {
++                "psr-4": {
++                    "FOS\\UserBundle\\": ""
++                },
++                "exclude-from-classmap": [
++                    "/Tests/"
++                ]
++            },
++            "notification-url": "https://packagist.org/downloads/",
++            "license": [
++                "MIT"
++            ],
++            "authors": [
++                {
++                    "name": "Christophe Coevoet",
++                    "email": "stof@notk.org"
++                },
++                {
++                    "name": "FriendsOfSymfony Community",
++                    "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
++                },
++                {
++                    "name": "Thibault Duplessis",
++                    "email": "thibault.duplessis@gmail.com"
++                }
++            ],
++            "description": "Symfony FOSUserBundle",
++            "homepage": "http://friendsofsymfony.github.com",
++            "keywords": [
++                "User management"
++            ],
++            "time": "2017-03-29T13:21:34+00:00"
++        },
++        {
+             "name": "incenteev/composer-parameter-handler",
+             "version": "v2.1.2",
+             "source": {
