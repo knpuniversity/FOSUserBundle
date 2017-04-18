@@ -1,7 +1,8 @@
-# Joyful Development with Symfony
+# FOSUserBundle FTWI!
 
 Well hi there! This repository holds the code and script
-for the Symfony course on KnpUniversity.
+for the [FOSUserBundle course](https://knpuniversity.com/screencast/fosuserbundle-ftw)
+on KnpUniversity!
 
 ## Setup
 
