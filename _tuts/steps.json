@@ -104,7 +104,12 @@
             "id": "event-redirect-to-previous-page",
             "name": "Event: Redirect to previous page",
             "description": null
+        },
+        {
+            "id": "guard-adding-form-authenticator",
+            "name": "Guard: Adding form authenticator",
+            "description": null
         }
     ],
-    "sha": "59a6080da86f40cf803ff509866531abf8f7ac50"
+    "sha": "55f1955aba40b6eddec6b22e7c2c2c0b8e356526"
 }
