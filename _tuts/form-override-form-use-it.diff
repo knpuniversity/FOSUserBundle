@@ -1,0 +1,51 @@
+diff --git a/app/config/config.yml b/app/config/config.yml
+index 738a56a..784e0f3 100644
+--- a/app/config/config.yml
++++ b/app/config/config.yml
+@@ -79,3 +79,6 @@ fos_user:
+     from_email:
+         address: "hello@aquanote.com"
+         sender_name: "AquaNote Postman"
++    registration:
++        form:
++            type: AppBundle\Form\RegistrationFormType
+diff --git a/app/config/services.yml b/app/config/services.yml
+index bf948d1..6255f3a 100644
+--- a/app/config/services.yml
++++ b/app/config/services.yml
+@@ -14,3 +14,8 @@ services:
+             - { name: twig.extension }
+         #arguments: ['@app.markdown_transformer']
+         autowire: true
++
++    app.form.registration:
++        class: AppBundle\Form\RegistrationFormType
++        tags:
++            - { name: form.type }
+diff --git a/src/AppBundle/Form/RegistrationFormType.php b/src/AppBundle/Form/RegistrationFormType.php
+new file mode 100644
+index 0000000..1e4080f
+--- /dev/null
++++ b/src/AppBundle/Form/RegistrationFormType.php
+@@ -0,0 +1,21 @@
++<?php
++
++namespace AppBundle\Form;
++
++use Symfony\Component\Form\AbstractType;
++use Symfony\Component\Form\FormBuilderInterface;
++use FOS\UserBundle\Form\Type\RegistrationFormType as BaseRegistrationFormType;
++
++class RegistrationFormType extends AbstractType
++{
++    public function buildForm(FormBuilderInterface $builder, array $options)
++    {
++        $builder
++            ->add('firstName');
++    }
++
++    public function getParent()
++    {
++        return BaseRegistrationFormType::class;
++    }
++}

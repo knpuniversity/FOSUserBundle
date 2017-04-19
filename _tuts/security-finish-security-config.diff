@@ -1,0 +1,19 @@
+diff --git a/app/config/security.yml b/app/config/security.yml
+index 58f1779..a904005 100644
+--- a/app/config/security.yml
++++ b/app/config/security.yml
+@@ -20,11 +20,10 @@ security:
+             anonymous: ~
+             # activate different ways to authenticate
+ 
+-            # http_basic: ~
+-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
++            logout: ~
+ 
+-            # form_login: ~
+-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
++            form_login:
++                csrf_token_generator: security.csrf.token_manager
+ 
+     access_control:
+         - { path: ^/admin, roles: ROLE_USER }

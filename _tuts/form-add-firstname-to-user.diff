@@ -1,0 +1,68 @@
+diff --git a/app/DoctrineMigrations/Version20170418144139.php b/app/DoctrineMigrations/Version20170418144139.php
+new file mode 100644
+index 0000000..8898674
+--- /dev/null
++++ b/app/DoctrineMigrations/Version20170418144139.php
+@@ -0,0 +1,34 @@
++<?php
++
++namespace Application\Migrations;
++
++use Doctrine\DBAL\Migrations\AbstractMigration;
++use Doctrine\DBAL\Schema\Schema;
++
++/**
++ * Auto-generated Migration: Please modify to your needs!
++ */
++class Version20170418144139 extends AbstractMigration
++{
++    /**
++     * @param Schema $schema
++     */
++    public function up(Schema $schema)
++    {
++        // this up() migration is auto-generated, please modify it to your needs
++        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
++
++        $this->addSql('ALTER TABLE user ADD first_name VARCHAR(255) NOT NULL');
++    }
++
++    /**
++     * @param Schema $schema
++     */
++    public function down(Schema $schema)
++    {
++        // this down() migration is auto-generated, please modify it to your needs
++        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
++
++        $this->addSql('ALTER TABLE `user` DROP first_name');
++    }
++}
+diff --git a/src/AppBundle/Entity/User.php b/src/AppBundle/Entity/User.php
+index fab6b99..04aef93 100644
+--- a/src/AppBundle/Entity/User.php
++++ b/src/AppBundle/Entity/User.php
+@@ -18,8 +18,23 @@ class User extends BaseUser
+      */
+     protected $id;
+ 
++    /**
++     * @ORM\Column(type="string")
++     */
++    private $firstName;
++
+     public function getId()
+     {
+         return $this->id;
+     }
++
++    public function getFirstName()
++    {
++        return $this->firstName;
++    }
++
++    public function setFirstName($firstName)
++    {
++        $this->firstName = $firstName;
++    }
+ }

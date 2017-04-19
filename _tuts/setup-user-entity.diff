@@ -1,9 +1,9 @@
 diff --git a/src/AppBundle/Entity/User.php b/src/AppBundle/Entity/User.php
 new file mode 100644
-index 0000000..60f90f9
+index 0000000..fab6b99
 --- /dev/null
 +++ b/src/AppBundle/Entity/User.php
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,25 @@
 +<?php
 +
 +namespace AppBundle\Entity;
@@ -23,4 +23,9 @@ index 0000000..60f90f9
 +     * @ORM\Column(type="integer")
 +     */
 +    protected $id;
++
++    public function getId()
++    {
++        return $this->id;
++    }
 +}

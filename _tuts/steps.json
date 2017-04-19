@@ -29,7 +29,82 @@
             "id": "setup-import-routes-basic-security-yml",
             "name": "Setup: Import routes + basic security.yml",
             "description": null
+        },
+        {
+            "id": "security-finish-security-config",
+            "name": "Security: Finish security config",
+            "description": null
+        },
+        {
+            "id": "security-add-remember-me",
+            "name": "Security: Add remember_me",
+            "description": null
+        },
+        {
+            "id": "security-add-login-logout-link",
+            "name": "Security: Add login\/logout link",
+            "description": null
+        },
+        {
+            "id": "template-use-our-base-layout",
+            "name": "Template: Use our base layout",
+            "description": null
+        },
+        {
+            "id": "template-give-more-structure",
+            "name": "Template: Give more structure",
+            "description": null
+        },
+        {
+            "id": "template-override-register-template",
+            "name": "Template: Override register template",
+            "description": null
+        },
+        {
+            "id": "template-translate-strings",
+            "name": "Template: Translate strings",
+            "description": null
+        },
+        {
+            "id": "form-add-firstname-to-user",
+            "name": "Form: Add firstName to User",
+            "description": null
+        },
+        {
+            "id": "form-override-form-use-it",
+            "name": "Form: Override form & use it",
+            "description": null
+        },
+        {
+            "id": "form-customize-template",
+            "name": "Form: Customize template",
+            "description": null
+        },
+        {
+            "id": "no-username-remove-username",
+            "name": "No Username: Remove username",
+            "description": null
+        },
+        {
+            "id": "event-create-empty-subscriber",
+            "name": "Event: Create empty subscriber",
+            "description": null
+        },
+        {
+            "id": "event-add-listener-method",
+            "name": "Event: Add listener method",
+            "description": null
+        },
+        {
+            "id": "event-complete-class-register",
+            "name": "Event: Complete class & register",
+            "description": null
+        },
+        {
+            "id": "event-redirect-to-previous-page",
+            "name": "Event: Redirect to previous page",
+            "description": null
         }
     ],
-    "sha": "91e406db9c796aaf242fd2b928fa10c5ebd6a1a0"
+    "sha": "59a6080da86f40cf803ff509866531abf8f7ac50"
 }

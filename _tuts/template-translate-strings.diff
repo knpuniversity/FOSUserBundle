@@ -1,0 +1,9 @@
+diff --git a/app/Resources/translations/FOSUserBundle.en.yml b/app/Resources/translations/FOSUserBundle.en.yml
+new file mode 100644
+index 0000000..7036146
+--- /dev/null
++++ b/app/Resources/translations/FOSUserBundle.en.yml
+@@ -0,0 +1,3 @@
++registration:
++    flash:
++        user_created: "Welcome! Now let's do some science!"

@@ -1,0 +1,43 @@
+diff --git a/app/config/services.yml b/app/config/services.yml
+index 6255f3a..153b708 100644
+--- a/app/config/services.yml
++++ b/app/config/services.yml
+@@ -19,3 +19,9 @@ services:
+         class: AppBundle\Form\RegistrationFormType
+         tags:
+             - { name: form.type }
++
++    app.redirect_after_registration_subscriber:
++        class: AppBundle\EventListener\RedirectAfterRegistrationSubscriber
++        autowire: true
++        tags:
++            - { name: kernel.event_subscriber }
+diff --git a/src/AppBundle/EventListener/RedirectAfterRegistrationSubscriber.php b/src/AppBundle/EventListener/RedirectAfterRegistrationSubscriber.php
+index fb7d840..eb150dd 100644
+--- a/src/AppBundle/EventListener/RedirectAfterRegistrationSubscriber.php
++++ b/src/AppBundle/EventListener/RedirectAfterRegistrationSubscriber.php
+@@ -5,12 +5,23 @@ namespace AppBundle\EventListener;
+ use FOS\UserBundle\Event\FormEvent;
+ use FOS\UserBundle\FOSUserEvents;
+ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
++use Symfony\Component\HttpFoundation\RedirectResponse;
++use Symfony\Component\Routing\RouterInterface;
+ 
+ class RedirectAfterRegistrationSubscriber implements EventSubscriberInterface
+ {
+-    public function onRegistrationSuccess(FormEvent $event)
++    private $router;
++
++    public function __construct(RouterInterface $router)
+     {
++        $this->router = $router;
++    }
+ 
++    public function onRegistrationSuccess(FormEvent $event)
++    {
++        $url = $this->router->generate('homepage');
++        $response = new RedirectResponse($url);
++        $event->setResponse($response);
+     }
+ 
+     public static function getSubscribedEvents()

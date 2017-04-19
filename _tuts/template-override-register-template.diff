@@ -1,0 +1,16 @@
+diff --git a/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig b/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig
+new file mode 100644
+index 0000000..bedd961
+--- /dev/null
++++ b/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig
+@@ -0,0 +1,10 @@
++{% trans_default_domain 'FOSUserBundle' %}
++
++<h1>Register Aquanaut!</h1>
++
++{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
++    {{ form_widget(form) }}
++    <div>
++        <input class="btn btn-primary" type="submit" value="{{ 'registration.submit'|trans }}" />
++    </div>
++{{ form_end(form) }}

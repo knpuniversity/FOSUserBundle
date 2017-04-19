@@ -1,0 +1,16 @@
+diff --git a/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig b/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig
+index bedd961..11201c9 100644
+--- a/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig
++++ b/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig
+@@ -3,7 +3,10 @@
+ <h1>Register Aquanaut!</h1>
+ 
+ {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+-    {{ form_widget(form) }}
++    {{ form_row(form.email) }}
++    {{ form_row(form.username) }}
++    {{ form_row(form.firstName) }}
++    {{ form_row(form.plainPassword) }}
+     <div>
+         <input class="btn btn-primary" type="submit" value="{{ 'registration.submit'|trans }}" />
+     </div>

@@ -1,0 +1,11 @@
+diff --git a/app/Resources/FOSUserBundle/views/layout.html.twig b/app/Resources/FOSUserBundle/views/layout.html.twig
+new file mode 100644
+index 0000000..42a77fb
+--- /dev/null
++++ b/app/Resources/FOSUserBundle/views/layout.html.twig
+@@ -0,0 +1,5 @@
++{% extends 'base.html.twig' %}
++
++{% block body %}
++    {% block fos_user_content %}{% endblock %}
++{% endblock %}

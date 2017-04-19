@@ -10,7 +10,7 @@ index e88b48e..4f76a89 100644
 +fos_user:
 +    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 diff --git a/app/config/security.yml b/app/config/security.yml
-index 8072372..7102e47 100644
+index afad10f..58f1779 100644
 --- a/app/config/security.yml
 +++ b/app/config/security.yml
 @@ -2,10 +2,13 @@

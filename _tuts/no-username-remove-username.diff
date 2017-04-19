@@ -1,0 +1,48 @@
+diff --git a/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig b/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig
+index 11201c9..54e1f0e 100644
+--- a/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig
++++ b/app/Resources/FOSUserBundle/views/Registration/register_content.html.twig
+@@ -4,7 +4,6 @@
+ 
+ {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+     {{ form_row(form.email) }}
+-    {{ form_row(form.username) }}
+     {{ form_row(form.firstName) }}
+     {{ form_row(form.plainPassword) }}
+     <div>
+diff --git a/src/AppBundle/Entity/User.php b/src/AppBundle/Entity/User.php
+index 04aef93..6165440 100644
+--- a/src/AppBundle/Entity/User.php
++++ b/src/AppBundle/Entity/User.php
+@@ -37,4 +37,17 @@ class User extends BaseUser
+     {
+         $this->firstName = $firstName;
+     }
++
++    /**
++     * Overridden so that username is now optional
++     *
++     * @param string $email
++     * @return User
++     */
++    public function setEmail($email)
++    {
++        $this->setUsername($email);
++
++        return parent::setEmail($email);
++    }
+ }
+diff --git a/src/AppBundle/Form/RegistrationFormType.php b/src/AppBundle/Form/RegistrationFormType.php
+index 1e4080f..6f16964 100644
+--- a/src/AppBundle/Form/RegistrationFormType.php
++++ b/src/AppBundle/Form/RegistrationFormType.php
+@@ -11,7 +11,8 @@ class RegistrationFormType extends AbstractType
+     public function buildForm(FormBuilderInterface $builder, array $options)
+     {
+         $builder
+-            ->add('firstName');
++            ->add('firstName')
++            ->remove('username');
+     }
+ 
+     public function getParent()

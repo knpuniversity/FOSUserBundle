@@ -1,0 +1,17 @@
+diff --git a/app/Resources/FOSUserBundle/views/layout.html.twig b/app/Resources/FOSUserBundle/views/layout.html.twig
+index 42a77fb..7c3d37e 100644
+--- a/app/Resources/FOSUserBundle/views/layout.html.twig
++++ b/app/Resources/FOSUserBundle/views/layout.html.twig
+@@ -1,5 +1,11 @@
+ {% extends 'base.html.twig' %}
+ 
+ {% block body %}
+-    {% block fos_user_content %}{% endblock %}
++    <div class="container">
++        <div class="row">
++            <div class="col-xs-12">
++                {% block fos_user_content %}{% endblock %}
++            </div>
++        </div>
++    </div>
+ {% endblock %}

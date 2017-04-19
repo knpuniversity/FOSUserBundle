@@ -1,0 +1,14 @@
+diff --git a/app/config/security.yml b/app/config/security.yml
+index a904005..cf82573 100644
+--- a/app/config/security.yml
++++ b/app/config/security.yml
+@@ -22,6 +22,9 @@ security:
+ 
+             logout: ~
+ 
++            remember_me:
++                secret: '%secret%'
++
+             form_login:
+                 csrf_token_generator: security.csrf.token_manager
+ 

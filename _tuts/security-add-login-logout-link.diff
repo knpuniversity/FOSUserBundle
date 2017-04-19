@@ -1,0 +1,17 @@
+diff --git a/app/Resources/views/base.html.twig b/app/Resources/views/base.html.twig
+index d05245a..5becbdb 100644
+--- a/app/Resources/views/base.html.twig
++++ b/app/Resources/views/base.html.twig
+@@ -22,7 +22,11 @@
+             <h1 class="logo">AquaNote</h1>
+             <ul class="navi">
+                 <li class="search"><a href="#" class="js-header-search-toggle"><i class="fa fa-search"></i></a></li>
+-                <li><a href="#">Login</a></li>
++                {% if is_granted('ROLE_USER') %}
++                    <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
++                {% else %}
++                    <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
++                {% endif %}
+             </ul>
+         </header>
+ 

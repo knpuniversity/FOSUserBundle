@@ -1,0 +1,27 @@
+diff --git a/src/AppBundle/EventListener/RedirectAfterRegistrationSubscriber.php b/src/AppBundle/EventListener/RedirectAfterRegistrationSubscriber.php
+index 35bce08..fb7d840 100644
+--- a/src/AppBundle/EventListener/RedirectAfterRegistrationSubscriber.php
++++ b/src/AppBundle/EventListener/RedirectAfterRegistrationSubscriber.php
+@@ -2,11 +2,21 @@
+ 
+ namespace AppBundle\EventListener;
+ 
++use FOS\UserBundle\Event\FormEvent;
++use FOS\UserBundle\FOSUserEvents;
+ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+ 
+ class RedirectAfterRegistrationSubscriber implements EventSubscriberInterface
+ {
++    public function onRegistrationSuccess(FormEvent $event)
++    {
++
++    }
++
+     public static function getSubscribedEvents()
+     {
++        return [
++            FOSUserEvents::REGISTRATION_SUCCESS => 'onRegistrationSuccess'
++        ];
+     }
+ }
+\ No newline at end of file
