@@ -1,4 +1,4 @@
-# FOSUserBundle FTWI!
+# FOSUserBundle FTW!
 
 Well hi there! This repository holds the code and script
 for the [FOSUserBundle course](https://knpuniversity.com/screencast/fosuserbundle-ftw)
