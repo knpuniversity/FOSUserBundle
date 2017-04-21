@@ -1,0 +1,11 @@
+chapters:
+    - fosuserbundle-setup
+    - security-setup
+    - roles-canonical-fields
+    - template-customize
+    - customize-text-translations
+    - customize-forms
+    - removing-username
+    - customize-events
+    - target-path-trait
+    - guard-authenticator

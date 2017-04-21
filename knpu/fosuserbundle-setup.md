@@ -1,39 +1,209 @@
-# FOSUserBundle Setup
+# Rock some FOSUserBundle!
 
-The most popular bundle in the entire symphony world is by far FOSUserBundle. It's easy to know why. It gives you a lot of functionality, but there's also a lot of confusion about what it gives you. A lot of times I get questions where people aren't really sure what FOSUserBundle does and what it does and doesn't have to do with security. I also get questions about how FOSUserBundle works with Guard Authentication. We're going to talk about all of this. We're going to install FOSUserBundle, we're going to customize the heck out of it, and we're going to make it work really well in your project.
+The most *popular* bundle in *all* of Symfony is... [GifExceptionBundle](https://github.com/jolicode/GifExceptionBundle)!
+Wait... that's not right... but it *should* be. The *actual* most popular bundle
+is, of course, FOSUserBundle. And it's easy to know why: it gives you *a lot* of
+crazy-cool stuff, out-of-the-box: registration, reset password, change password,
+and edit profile pages. Honestly, it feels like stealing.
 
-Now as always, you should totally code along with me. You can download the course code from this page. When you unzip it in the start directory you'll have the same code that you see here. Just open up the Read Me file and follow down to figure out how to set up the project. The last step will be to go to your terminal and run php bin/console server:run. To get our built-in php web server going. Then you can go to localhost:8000, and welcome to AquaNote. This is the project that we've been building in our main Symphony tutorial, and it already has a bunch of features, but it does not have any login. This login link up here goes nowhere. It has no security at all. Let's add some.
+But guess what? A lot of smart devs don't like FOSUserBundle. How could that be?
+The bundle *does* give you a lot of stuff. But, it's not a magician: it doesn't know
+what your design looks like, what fields your registration form should have, the
+clever text you want in your emails or where to redirect the user after registration.
 
-Find the FOSUserBundle documentation. You can Google for it, it lives on symphony.com. We're just going to go down the install instructions, but in a little bit of a different order. I'm going to copy the composer require line, but don't worry about the version number. It will grab the latest version automatically. I'll go over to my terminal, open a new tab, and then run composer require friendsofsymfony/user-bundle. While I'm waiting for that, we also know that we're definitely going to need to enable the bundle so I'll copy that line for app kernel. Go into app/appkernel, and we will enable that bundle.
+See, there's a lot of stuff that makes your site *special*. And that means that if
+you're going to use FOSUserBundle - which *is* awesome - you're going to need to
+customize a lot of things. And you've come to the right place: once we're done,
+you're going to be *embarrissingly* good extending this bundle. I mean, your co-workers
+will gaze at you in amazement as you hook into events, customize text and override
+templates. It's going to be beautiful thing.
 
-The FOSUserBundle also has a dependency on the swift mailer bundle, which we removed earlier in the tutorial just to show that we could. So I'm going to uncomment that out to re-add the swift mailer bundle. Technically you can use the FOSUserBundle without it, but most of the time you will want FOSUserBundle to send emails for you.
+Let's do it!
 
-Now if you flip back to your terminal you probably are going to see a huge error. You can see up here it did end up installing FOSUserBundle just fine, but then when it was clearing our cache we got an error that says the db_driver at path fos_user must be configured.
+## Code along with me yo!
 
-This bundle has some required configurations so as soon as you enable the bundle here, if you don't have that configuration you're gonna get an error. So, that's what we need to fill in.
+As always, you should *totally* code along with me... it's probably what the cool
+kids are doing. Just click the download button on this page and unzip that guy. Inside,
+you'll find a `start/` directory that has the same code you see here. Open up
+`README.md` for hilarious text... and setup details.
 
-Now what does fos bundle actually give us though? In reality, fos bundle only gives you two things. A user class that you can store in a database, and a bunch of routes and controllers for common things like registration, edit password, reset password, and a login page. It doesn't actually have anything to do with security. It has very little to do with security. Now in order to use the user class that they provided, we need to create a small user class in our project that extends theirs.
+The last step will be to find your favorite terminal and run:
 
-So inside of my src, app bundle, entity directory, I'm going to create a new php class called user. And then I'm going to need to extend their base user so I'm going to say use user and you'll see one in here for fosuserbundle\model I'll say as baseuser I'll alias it so we can say extends baseuser. The only thing we need to add to this class is protected id property. It has to be protected because it exists in the base class as protected.
+```terminal
+php bin/console server:run
+```
 
-Now this is just normal user entity so I'm going to go to code generate or command n and I'm going to go ORM class to generate my ORM class at the top. I'm actually going to put ticks around the user here because that's a protected word in some database engines so that will allow us to use that as the table name. Then we go back down here again, go back to code generate or command and type ORM annotation and I'll add the annotation for my id column. My primary key. Finally, I'll go back to code generate one last time so we can generate the id getter. The docs do have an example user class that you can copy from but I find this just as easy.
+to start the built-in PHP web server. Ok, load this up in your browser: `http://localhost:8000`.
 
-Now that we have the user class we can go and add the required configuration. If you scroll down a little bit ... and we're going to do things a little bit out of order ... you'll see configure the FOSUserBundle. Copy the configuration here, this is all required, and flip back, open your app config, config.yml, and put that anywhere. I'll put that on the bottom. The ORM is the driver we're using, firewall name is actually the name of your firewall and security.yml so it's main by default. Then the user class is AppBundle\Entity\User and then for some email things below I'm just going to fill in hello@aquanote.com and sender name let's say AquaNote Postman. I'll talk a little bit more later about the emails that FOSUserBundle sends.
+Welcome to AquaNote! This is the same project we've been building in our main Symfony
+tutorials, but *without* any security logic. Gasp! See that Login link? It's a lie!
+It goes nowhere! The login link is a lie!
 
-Now finally, with that configuration, our application is at least not broken anymore. You can run bin console and it won't blow up. Which means we need to generate our migration for our user class. So I'm going to do .bin/console doctrine:migrations:diff, it dumps out the generated migration, that looks correct, it's building the user class, and then I'll run back to migrations:migrate to execute that. Perfect.
+Google for the [FOSUserBundle documentation](http://symfony.com/doc/current/bundles/FOSUserBundle/index.html):
+it lives right on Symfony.com. And make sure you're on the 2.0 version.
 
-So at this point the only thing that this bundle has given us is this base user class, which has a bunch of properties on it like user name, email, password, last login, etc. remember the second thing that this bundle gives you is a bunch of routes and controllers for registration and other things. To get those we need to import the routes. So go back to the documentation, scroll down a little bit, you'll see a step six import the routing dot ... routing files. I'll copy those two lines, then go into my app config routing.yml, and it doesn't matter but we'll put those on top. As soon as you do that, if you move over to your terminal, you can run ./bin/console debug:router and check this out. We have a bunch of new routes. /login, /profile/edit, /register, things for resetting your password. Changing your password. So yes quite literally after we run that line we can go to /register and see a registration page. I know it looks terrible, we'll fix that really soon.
+## Installing & Enabling the Bundle
 
-I also want you to notice that if you scroll all the way down to this bottom of this page, there's a section that says advanced routing configuration. I'll open that up in a new tab because in reality if you don't need all of these features, like for example, if you want registration and reset password but you don't need the profile routes, then instead of importing this all.xml you can just import whichever ones that you want. You can even control the prefix on those urls. So if you're not using some of these routes go ahead and remove them. Only import the ones that you actually need.
+We'll go through the install details... but in our own order. Of course, first,
+copy the `composer require` line... but don't worry about the version number. Head
+over to your terminal and run that:
 
-Now on the registration page if yours doesn't look line mine, if you see weird translation keys, make sure you go into app config config.yml and up near the top make sure that you have the framework translator key uncommented. FOSUserBundle uses the translator to translate its keys into other languages so by doing that you'll suddenly actually see the real strings. For the most part that's it we have more work to do but notice we haven't touched security at all, and yet we already have a bunch of user class and a bunch of routes and controllers that we can take advantage of. In fact in order to get registration to work there's only two tiny bits of configuration that we need to put in our security.yml.
+```terminal
+composer require friendsofsymfony/user-bundle
+```
 
-The first is called encoders. What we're gonna say AppBundle\Entity\User: bcrypt and what that's saying is when we register obviously symphony needs to encrypt the password and store the encrypted password in the database, this tells symphony what algorithm to use. So it's really not that related to security.
+While we're waiting for Jordi to prepare out delicious FOSUserBundle package, go
+back and copy the `new FOSUserBundle()` line from the docs, open our `app/AppKernel.php`
+file and paste it to enable the bundle. Oh, and FOSUserBundle uses `SwiftmailerBundle`
+to send the password reset and registration confirmation emails. So, uncomment that.
+You can also create your own custom mailer or tell FOSUserBundle to not send emails.
 
-The other bit that we need, which is inside the documentation under step four, is this little providers key here. I'll copy that, move over and override what was there. This is a little bit more related to security, and I'll talk a little bit more about it in a moment, but for right now that's going to ... when you register with FOSUserBundle it automatically logs you in which is nice. So this little bit of configuration is needed to make that work. Notice we haven't actually touched any of the meat of our security. We have not yet touched our firewall.
+Ok, flip back to your terminal. Bah! It exploded! Ok, it *did* install FOSUserBundle.
+So, let's not panic people. It just went crazy while trying to clear the cache:
 
-All right so let's try it. I'll refresh /register, let's log in. Aquanaut1@gmail.com, aquanaut1, password turtles. Check this out, and boom! Not only did we hit this confirmation page, but we are logged in as aquanaut1. You can see that we even have a role_user. Every user gets at least that role.
+> The child node `db_driver` at path `fos_user` must be configured
 
-So yeah, we are set up. We haven't touched security basically at all but we're already using a lot of features of this bundle. Notice we can't actually log out yet. If we click log out here, you'll actually see an error and we can't actually log in yet.
+Ah, so this bundle has some *required* configuration.
 
-That's not the fault of FOSUserBundle, it's just that we haven't set up our security yet. FOSUserBundle is actually doing its job, we just now need to set up some security. Let's do that next.
+## Create your User Entity
+
+Before we fill that in, I have a question: what does FOSUserBundle *actually* give
+us? In reality, just 2 things: a `User` entity and a bunch of routes and controllers
+for things like registration, edit password, reset password, profile and a login page.
+
+To use the `User` class from the bundle, we need to create our own small `User`
+class code that extends their's.
+
+Inside `src/AppBundle/Entity`, create a new PHP class called `User`. To extend the
+base class, add a `use` statement for their `User` class with `as BaseUser` to avoid
+a lame conflict. Then add, `extends BaseUser`.
+
+There's just one thing we *must* do in this class: add a `protected $id` property.
+Beyond that, this is just a normal entity class. So I'll go to the Code->Generate
+menu - or Command+N on a Mac - and choose `ORM Class` to get my fancy `@ORM\Entity`
+stuff on top. Add ticks around the `user` table name - that's a keyword in some
+database engines.
+
+Now, go back to Code->Generate, choose `ORM Annotation` and select the `id` column.
+Boom! We are annotated! Finally, go back to Code->Generate *one* last time... until
+we do it more later - and generate the `getId()` method.
+
+This class is done!
+
+***TIP
+Actually, this is unnecessary - the base `User` class already has a `getId()` method.
+***
+
+## Adding the Required Configuration
+
+And now we have everything we need to add the required configuration. In the docs,
+scroll down a little: under the Configure section, copy their example config. Then,
+back in your editor, open `app/config/config.yml`, and paste this down at the bottom.
+
+Ok, The `db_driver` *is* `orm` and the `firewall_name` - `main` - is also correct.
+You can see that key in `security.yml`.
+
+And yea, the `user_class` is also correct. We're crushing it! For the email stuff,
+it doesn't matter, use `hello@aquanote.com` and `AquaNote Postman`.
+
+## Generate the Migraiton
+
+*Finally*, our app should be un-broken! Try the console:
+
+```terminal
+php bin/console
+```
+
+It's alive! Now, we can generate the migration for our `User` class:
+
+```terminal
+php bin/console doctrine:migrations:diff
+```
+
+***TIP
+If you get a "Command not Found" error, just install the
+[DoctrineMigrationsBundle](https://knpuniversity.com/screencast/symfony-doctrine/migrations).
+***
+
+Yep, that looks about right. Run it:
+
+```terminal
+php bin/console doctrine:migrations:migrate
+```
+
+Perfect!
+
+## Importing the Routing
+
+At this point, the *only* thing this bundle has given us is the base `User` class...
+which is nice, but nothing too special, it has a bunch of properties like
+`username`, `email`, `password`, `lastLogin`, etc.
+
+The *second* thing this bundle gives us is a bunch of free routes and controllers.
+But to get those, we need to *import* the routes. Back in the documentation, scroll
+down a bit until you see step 6: Import FOSUserBundle routing files. Ah ha! Copy
+that routing import.
+
+Find your `app/config/routing.yml` file and paste that on top.
+
+As *soon* as you do that, we have new routes! At your terminal, check them out:
+
+```terminal
+php bin/console debug:router
+```
+
+Awesome! We have `/login`, `/profile/edit`, `/register` and others for resetting
+and changing your password. If we manually go to `/register` in the browser... yea!
+A functional registration form. I know, it's *horribly*, *embarrassingly* ugly:
+we'll fix that.
+
+Oh, and back on the docs, all the way at the bottom, there's a page about
+[Advanced routing configuration](http://symfony.com/doc/master/bundles/FOSUserBundle/routing.html).
+Open that in a new tab. In your app, you may not need *all* of the pages that
+FOSUserBundle gives you. Maybe you need registration and reset password, but you
+don't need a profile page. No problem! Instead of importing this `all.xml` file,
+just import the specific routes you want. Seriously feel free to do this: if some
+route or controller isn't helping you, kill it.
+
+## Enabling the Translator
+
+Oh, and if your registration page doesn't look mine - if it has some weird keys
+instead of real text, don't worry. In `app/config/config.yml`, just make sure to
+uncomment the `translator` key under `framework`.
+
+FOSUserBundle uses the translator to translate internal "keys" into English or
+whatever other language.
+
+## A *little* bit of Security
+
+And basically... at this point... we're done installing the bundle! But how is that
+possible? We haven't touched anything related to security!
+
+Here's the truth: this bundle has almost *nothing*  to do with security: it just
+gives you a `User` class and some routes & controllers! We could already register,
+reset our password or edit our profile without doing any more setup.
+
+Well, that's *almost* true: we do need a *tiny* bit of security to make registration
+work. In `security.yml`, add an `encoders` key with `AppBundle\Entity\User` set
+to `bcrypt`. When we register, FOSUserBundle needs to encode the plain-text password
+before saving it. This tells it what algorithm to use.
+
+There's one other small bit of security we need right now. In the documentation,
+under step 4, copy the `providers` key. Paste that over the old `providers` key
+in `security.yml`.
+
+I'll talk about this more in a few minutes, but it's needed for registration only
+because FOSUserBundle logs us in after registering... which is really nice!
+
+In the next chapter, we'll do more security setup. But for right now, that's all
+we need!
+
+So try it out! Refresh `/register`. Let's use `aquanaut1@gmail.com`, `aquanaut1`,
+and password `turtles`. And boom! We are registered *and* logged in! We even have
+a role: `ROLE_USER`. More on that later.
+
+With a `User` class, a route import and a *tiny* bit of security, everything in the
+bundle works: registration, reset password, edit password and edit profile.
+
+The only thing you *can't* do is log out... or login. But that's not FOSUserBundle's
+fault: setting up security is *our* job. Let's do it next.

@@ -1,29 +1,77 @@
-# Template Customize
+# Layout and Template Customization
 
-All right. So, everything's working just fine. But if you go to /register, or any of the routes that FOSUserBundle gives us they're awful looking, and of course they're awful looking. FOSUserBundle has no idea how to style our pages, so let's fix this.
+Everything *works*, but if you go to `/regster`... it looks *awful*. Well, of
+*course* it looks awful! FOSUserBundle has *no* idea how the page should be styled.
+But don't worry: we can get this looking a *lot* better quickly.
 
-First of all, down in the web depot toolbar you can find the render template spot, click that. Because this is going to show you all the temples that have been rendered on this page, which is going to be a really good map that tells us which templates we should override from the bundle. First one that I'm interested in is this layout.html.twig and it's inside of the FOSUserBundle.
+First, on the web debug toolbar, find the template icon and click that. This will
+show you all the templates used to render this page... which is a *beautiful*
+cheat sheet for knowing what templates you should override!
 
-I'm going to move over to my editor, hit shift shift to look for layout.html.twig. You get the one that's inside of the user bundle. When you load any page, any of the templates from FOSUserBundle, they all extend this layout which is obviously not correct, we want them to extend our, our base layout. So, quite literally, on the page, when you see little Logged in as admin/Log out link, that's actually coming from our base layout. What we effectively want to do is replace this base layout with our base layout, and the way you do that is by overriding this layout and pointing it to our base layout. It's a two step process. First, whenever you want to override a template from a bundle you're going to go to app/resources and then create a new directory with the same name as the bundle, so FOSUserBundle, and then you're going to follow the same path as that. So, since this lives in the ...
+## Correcting the Base Layout
 
-Inside there, we'll create a views directory. Now, what you'll do is you'll look at where the template lives, in this case it lives directly in the views of the bundle, it doesn't live in the subdirectory. So that means right inside of our views we can create layout.html.twig. Then we're going to extend our normal base.html.twig. Here's the tricky part ... if you do a shift shift again it will [open 00:02:40] up a template called register.html.twig, which is the actual template rendered on this one page, it looks like this. You can see that inside of the base template from the bundle ... there is an fos_user_content block and all of the children templates that's actually what they populate.
+The one I'm interested in is `layout.html.twig`, which lives in FOSUserBundle.
 
-So, check this out, inside of our overridden layout we can say, "block body," because that's the name of the block that we have in our base layout. Inside of there, we can actually just print block fos_user_content endblock. Now the children templates still extend layout but we're overriding it, taking the child content from them and putting it into our block body. We're effectively taking the children templates content and putting it in the block we actually want it. Just by doing this, if you refresh the page, you're going to see a much better output. Still not styled perfectly, but this is actually starting to make sense. Of course, if you want to you you can even put a little bit of ... markup around them ... which helps a little bit more.
+In my editor, I'll press Shift+Shift to look for this file. Ok, *every* Twig template
+in FOSUserBundle extends *this* `layout.html.twig` file. For example, see the
+"Logged in as" text? That's coming from this template.
 
-That's the most important thing to do, you need to override the base layout, it solves most of your issues. Now this template is still not perfect, it doesn't even have an h1 on it that says, "Register". So in reality, in addition to overwriting the base layout, you're really going to need to overwrite every single template from FOSUserBundle. Which is basically, registration for all of the different pages that you're actually using.
+But, we all of FOSUserBundle's template to instead  extend *our* `base.html.twig`
+template. How can we do that?
 
-So, for this page. Again, down here, if we click on the templates we can see that registered at html.twig is the name of this template, which is what we have opened right here. Now, every single template inside of FOSUserBundle immediately includes another file, by the same name _content.html.twig. Let me show you what I mean, I'm going to go up here and double click this word views, so that it will move my tree over here into FOSUserBundle. So you see inside Registration, there is a register and a register_content. In Profile there's edit and edit_content, show and show_content. In most cases what you actually want to override is this register_content.html.twig. Why do they separate into two things? There's no important reason, just so that you don't have to worry about extending anything inside of your template, you can just do the raw content.
+By overriding `layout.html.twig`. Let's see how. First, to override *any* template
+from a bundle, just go to `app/Resources`, then create a directory with the same
+name as the bundle: `FOSUserBundle`. Inside, create another directory: `views`.
 
-If you look at register_content.html.twig it's just the meat of the template. So, I'm going to copy its contents then go back in to app/resources/views, create a registration directory. I'm doing that because this template lives in a registration directory. Then create register_content.html.twig, paste that in there, let's just add a couple of styles to our button and we'll add an h1 that says, "Register Aquanauts!" Perfect.
+In this case, the `layout.html.twig` template lives right at the root of the `views/`
+directory in the bundle. So that's where we'll create ours. Inside, extend the
+normal `base.html.twig`. 
 
-Just by doing that, our template gets a little bit better. So just make sure that you go to all the different pages: registration, log in, reset password, that you're using from the bundle and override the templates so that it looks the way you want it to.
+Here's the magic part. Hit Shift+Shift again and open `register.html.twig`: this
+is the template for the registration page. Notice that it overrides a block called
+`fos_user_content`. In `layout.html.twig`, this is printed in the middle of the
+page.
 
-Right now if we login, let's log in this. If you create a new user: aquanaut2@gmail.com, aquanaut2, turtles, turtles. You see this flash message: The user has been created successfully. How do we change that? Because that's probably being set inside the controller for the bundle. Anytime you see any strings coming from the bundle they're going to the translator, which is awesome because we can use the translator to actually change the text to what we want.
+So check this out: inside of our overridden `layout.html.twig`, add `{% block body %}`:
+that's the name of the block our `base.html.twig`. Inside, print `{% block fos_user_content %}`
+then `{% endblock %}`.
 
-So back in my [petri 00:07:34] storm, I'm going to close all the templates I have open. Then I'll do shift shift and look for FOSUserBundle.en.yml. See, whenever FOSUserBundle translates something, it translates it through a domain called FOSUserBundle, which isn't important it just means that when you translate strings you'll need to put them in a file called FOSUserBundle.language.yml.
+We're effectively *transferring* the content from the `fos_user_content` block to
+the correct block: `body`.
 
-Now if we search for this: The user has been created successfully. The user has been, perfect. We can find under registration, flash, user_created, there's the string. You can see how easy it is to override all of the text from the bundle.
+These 5 lines of code are *huge*. Refresh the page! Ha! So much better! Not perfect,
+but it now lives in our layout. If you want, you can even add a little more markup
+around the block.
 
-So, inside of app/Resources/translations we're going to create our own FOSUserBundle.en.yml. Then we're going to do the same keys: registration.flash, user_created. Registration, flash, user_created. What we're going to say?, "Welcome! Now let's do some science!" And that should override this one. The first time you add a new translation file, you're going to need to go and run bin/console cache:clear. It's a rare case where in the dev environment you need to clear the cache, otherwise [Symphony 00:09:08] won't see that new translation file.
+## Overriding Individual Templates
 
-Cool. Then go back, go back to /register ... It's time to do aquanaut3@gmail.com, turtles ... And Boom! Let's do some science. Got it. Next, let's customize the form itself.
+Overriding the base layout is step one. But, each individual page still won't look
+quite right. In this case, we *at least* need a "Register" `h1`, and I'd like to
+make that button look beter.
+
+So in addition to overriding `layout.html.twig`, you really need to override every
+template from FOSUserBundle that you use - like registration, reset password, login
+and a few others.
+
+Once again, click the templates link in the web debug toolbar. This template behind
+this page is `register.html.twig`, which we already have open. But notice, it immediately
+includes `register_content.html.twig`. This is a really common pattern in this bundle.
+
+Let me show you: I'll click the `views` link to move my tree into FOSUserBundle.
+In `Registration`, we have `register.html.twig` and `register_content.html.twig`.
+In `Profile` there's the same for edit and show.
+
+In most cases, you should override the `_content.html.twig` template. Why? Well,
+it doesn't really matter: by overriding the `_content.html.twig` template, you
+don't need to worry about extending anything: you can just focus on the content.
+
+Copy the contents of `register_content.html.twig`. Then, back in to `app/Resources/views`,
+create a `Registration` directory. I'm doing that because this template lives in
+a `Registration` directory. Finally, create `register_content.html.twig` and paste
+in the content. Let's add a couple of styles to the button and add an h1 that says:
+"Register Aquanauts!"
+
+Ok, refresh! Love it! In your app, make sure to do this for all of the different
+pages from the bundle that you're using. And remember, if you don't need a page -
+like the edit profile page - save yourself some time by *not* importing its route
+or overriding its template.

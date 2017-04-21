@@ -1,21 +1,95 @@
-# Customize Forms
+# Customizing the Forms
 
-Right now on the registration page, we have a couple of fields. We have email, username, and password. But you're probably going to add your own fields to user like first name. And you might want to add those to your registration page. Let's do that. First I'm going to open up my user entity. And very simply, if you want a new property on your user class, that's fine. Awesome. Add it. Let's add a new one called Private First Name. I go to Code Generate, or Command End. I'll go down it. Foreign Meditation. And I'll add it for the first name. Then I'll go back again to Code Generate or Command End and do my getters and setters for first name. Perfect.
+What if we wanted to add our own fields to the registration form? Like, what if
+we needed to add a "First Name" field? No problem!
 
-Now notice, I made first name. It's not null by default. If you want, a first name is optional. You can make it nullible equals true. If you add any fields to your user class that are required in the database, like this one, then you'll no longer be able to use the fos:user:create in console method because this will try to create a user without that field and it will explode. That's not that big of a deal. You might not need that but just be aware that that will happen. Now our user class is set up so let's bounce over to our terminal and run doctrine migrations diff. This looks correct. And we'll say bin console doctrine migrate. Perfect.
+## Adding a firstName field to User
 
-Okay. We added the field to our user. Awesome. How can we add it to this form, because obviously we are not in charge of building this form? Well, once again we're going to go down to our web debug toolbar. [inaudible 00:02:06]. What we're going to do here is basically create a new form for our registration page. Over in our terminal in the form directory I'm going to create a new class called Registration Form Type. Now I just extend the normal abstract type for my form components and then I'll do Code Generate or Command End to override the build form method, the main method that you want to have. We'll just say Builder Add First Name. I won't even fill in the type. I'll let it use the text field.
+Let's start in our `User` class. This is a normal entity, so we can add whatever
+fields we want, like `private $firstName`. I'll go to Code->Generate, or Command+N
+on a Mac, then select "ORM Annoations" to annotate `firstName`. I'll go back to
+Code->Generate to add the getter and setter methods.
 
-Now, one of the cool things about the forms in FOS User Bundle is that you can override them, which means we can tell FOS user bundle instead of using whatever form it's using here normally, use our from instead. And that's what we're going to do. But, you know, instead of completely replacing the built in form, what I really want to do is just add one field to it. I don't really need to ... I don't really want to have to re-add all these fields myself. Is there a way for us to sort of extend the existing form? The answer is absolutely. And the web debug toolbar is going to help us out. If you move your mouse over the bottom, find the form icon and click that, you'll go into the profiler. This is cool because it's telling us the class that FOS User Bundle is using internally to build this form. It's actually called Registration Form Type, same as our form.
+Now notice, right now, `firstName` is *not* nullable... and that's fine! If `firstName`
+is optional in your app, you might want to add `nullable=true`. I'm mentioning
+this for one specific reason: if you add any required fields to your `User`, the
+`fos:user:create` command will *no* longer work... because it will create a new
+`User` but leave those fields blank. I never use this command in production anyways,
+but I wanted to warn you!
 
-If you want to use it, say that parent class, you don't extend it like you might think. Instead, you're going to override a method called Get Parent. Inside Get Parent, we're just going to return the class that we want to extend. At the top I'll say Use Registration Form Type. I'll do the one from FOS User Bundle and I will alias that as Base Registration Form Type, since they have the same name. Down here we can return. Return BaseRegistrationFormType::class. That's it. Our form will now use that base form class, which is cool because it'll add all these fields for us and then we can add our extra field. Pretty cool.
+Move over to your terminal to generate the migration:
 
-Last up is to tell FOS User Bundle about our form. That's a two step process. First, we're going to register as a service. Down in my app config services.ymail, I'll say app.form.registration. The class to registration form type. And then we need to give it a tag called form.type. I'll actually copy the class name here because the last step to tell FOS User Bundle about this is to go to app config, conifig.ymail and add a little key down here under FOS User. Now, there's actually a lot of configuration that you can put down there. And if you go to the bottom of the documentation page, the second to last link says FOS User Bundle configuration reference, so I'll open that in a new tab.
+```terminal
+php bin/console doctrine:migrations:diff
+```
 
-And this is pretty awesome because it gives you a full dump of all the things you can do inside the configuration. A lot of this is explained in other places of the documentation but not everything, so it's good to know about. And you can see, we have a registration form type, or we can point it at our registration form type. Flip over and we'll add registration, form, type and I'll paste our full class name that we just replaced it with. And that is everything.
+That looks correct! Run it:
 
-Let's go back to our page. Go back to registration, refresh and boom. Automatically we have the new first name field on the bottom. And that will work when we save it. Why is it at the bottom? Well, remember inside of our app resources views, app resources FOS User Bundle views, registration, registered content, we're just dumping out form widget, which means it's just going to print the fields in whatever order they happen to be added to the form. If you want to, instead you can take control of that by saying Form Row, form.email and it'll add the other fields, which are form.username. And then let's add our first name. And finally we'll add form.plainPassword. If you're not sure what the field names are called, again you can go down here into your ... And click on the form in the web debug toolbox and you can see email, username, plain password, first name. Now I'm going to refresh the register page. First name is exactly where I want it to be.
+```terminal
+php bin/console doctrine:migrations:migrate
+```
 
-Okay. One last challenge here. Sometimes in an application, you don't want to have a username. The only thing you need is an email address. How can we kill the username field? Well, you can't remove the username field from the database. The way the doctrine works, there's no way for us to say, "I want to not have a user column in the database." The way you do this is you actually have the username set to the same thing as the email address. It's really easy to set that up automatically. The first step is, inside your user class, I'm going to do Code Generate, or Command End, set override methods, and we're going to override set email. What we're before the return for the parent call is we're going to say this>setUsername email address. In other words, we're no longer going to require the username to need to be set. As long as we set the email, that will set the username automatically to the email address. On the database, the email and the username field will always be the same. It's not perfect because you still have the username field in the database, but it really doesn't matter and you can basically not worry about it.
+New field added! So how can we add it to this form? Simple! We can create our *own*
+new form and then tell FOSUserBundle to use it instead.
 
-Now, the only other thing we need to do at this point is we need to remove the username field from the registration template, from the registration form. How do we do that? Well, it's really easy. Inside our registration form type, in addition to adding the first name field, we can actually call remove username. And then, of course, in our template we just remove that field and that's it. Refresh the register page, now email first name, password, and repeat password. Let's register as aquanaut4@gmail.com. Fill out the fields and we've got it. If you clear the database for this you can see the username is automatically set to the same as the email field and our first name was successfully set. It's actually really easy to do.
+## Creating the Override Form
+
+In `src/AppBundle`, create a new `Form` directory and a new class called `RegistrationFormType`.
+Extend the normal `AbstractType`. Then, I'll use Code->Generate or Command+N to
+override the `buildForm()` method. Inside, just say `$builder->add('firstName')`.
+
+In a moment, we'll tell FOSUserBundle to use *this* form instead of its normal
+registration form.  But... instead of completely *replacing* the default form, all
+I *really* want to do is *add* one field to it. Is there a way to extend the existing
+form?
+
+## Extending the Core Form
+
+Absolutely! And once again, the web debug toolbar can help us out. Mouse over the
+form icon and click that. This tells us what form is used on this page: it's called
+`RegistrationFormType` - the same as our class name.
+
+To build on *top* of that form, you don't actually extend it. Instead, override
+a method called `getParent()`. Inside, we'll return the class that we want to extend.
+At the top, add `use`, autocomplete `RegistrationFormType` from the bundle and
+put `as BaseRegistrationFormType`, so it doesn't conflict with our class.
+
+Now, in `getParent()`, we can say `return BaseRegistrationFormType::class`.
+
+And that is it! This form will now contain the existing fields *plus* `firstName`.
+
+## Registering the Form with FOSUserBundle
+
+To tell FOSUserBundle about out form, we need to do two things. First, we need to
+register this as a service. In my `app/config/services.yml`, add `app.form.registration`
+with `class` set to the `RegistrationFormType`. It also needs to be tagged with
+`name: form.type`.
+
+Finally, copy the class name and go into `app/config/config.yml`. This bundle has
+a *lot* of configuration. And at the bottom of the documentation page, you can
+find a reference called `FOSUserBundle Configuration Reference`. I'll open it in
+a new tab.
+
+This is pretty awesome: a full dump of all of the configuration options. Some of
+these are explained in more detail in other places in the docs, but I love seeing
+everything right in front of me. And we can see what we're looking for under
+`registration.form.type`.
+
+Go back to your editor and add those: `registration`, `form` and `type`. Paste
+our class name next to that!
+
+We're done! Go back to registration and refresh. We got it! And that *will* save
+when we submit.
+
+## Customizing the Form Order
+
+Why is it at the bottom? Well, remember inside of `register_content.html.twig`,
+we're using `form_widget(form)`... which just dumps out the fields in whatever
+order they were added. Need more control? Cool: remove that and instead use
+`form_row(form.email)`, `form_row(form.username)`, `form_row(form.firstName)` and
+`form_row(form.plainPassword)`.
+
+If you're not sure what the field names are called, again, use your web debug toolbar
+for the form: it shows you all of the fields.
+
+Refresh that page! Yes! First Name is *exactly* where we want it to be.

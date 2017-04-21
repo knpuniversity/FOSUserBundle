@@ -1,17 +1,89 @@
-# Customize Events
+# Customize everything with Events
 
-We can override templates. We can override translations. We can override forms. But there's more than that. For example, after we finish registration, we're redirected to this registration confirmation page. I would rather it redirect me somewhere else, like the homepage, so that the user never has to see this page. So how do we do that? Well, let's do a little bit of digging. If you hover over the route name down here, you can see that this is rendered by RegistrationController. So I go back here into my editor, do shift, shift, and look for RegistrationController in UserBundle. So actually registerAction is the action that both renders and processes the registration page. If you look down here after the form is valid, it ends up redirecting us over to this confirmation page.
+We can override templates. We can override translations. We can override forms.
+But there's *more* than that. For example, after we finish registration, we're
+redirected to this registration confirmation page. You know what? I'd rather do
+something else: I'd rather redirect to the homepage and skip this page entirely.
+How can we do this?
 
-So at first it seems like if we want to override this behavior, we need to actually override the controller class itself. And that is totally possible to do, but don't. Because notice also, this controller is littered with events being dispatched. Registration initialized, registration success, registration completed, registration failure. Basically, each of these represents a hook point where we can execute code right there without needing to override the controller. And every single controller inside of FOS UserBundle has events like this, which makes us very, very powerful. So in this case, if you look closely, you can see that it dispatches an event called registration success, and then down here, it checks to see if the event has a response set on it. If it doesn't, then it redirects. But if it does, it uses that response. In other words, we can write a listener on registration success and create our own redirect response. Set that on the event, and FOS UserBundle will use our response. So let's do it.
+Well, let's do a little bit of digging. If you hover over the route name in the
+web debug toolbar, you can see that this is page rendered by `RegistrationController`.
+Back in my editor I'll press Shift+Shift and look for `RegistrationController` in
+the bundle. Specifically,` registerAction()` is responsible for both rendering the
+registration page *and* processing the submit.
 
-Inside of AppBundle, operate a new directory called EventListener. Inside of there, a new PHP class. How about RedirectAfterRegistrationSubscriber. We'll make this implement EventSubscriberInterface. That's the interface all event subscribers implement. I'll go ahead and code generate, or command+N, go to implement methods, and select getSubscribedEvents. So very simply, we're gonna return an array here, where we say we want to listen on FOSUserEvents registration success. So here we'll say FOSUserEvents registration success. Then when that happens, call on registration success. Which is a method that I will create above, public function onRegistrationSuccess. Now notice when this event is dispatched, they pass us a FormEvent. So that means that this first argument here is gonna be FormEvent from UserBundle event. That's gonna be important because that's what we're gonna set the response on. Now before we go any further, I'm gonna hold command and click into the FOSUserEvents class, 'cause this has awesome documentation about all of the different events you can hook into, why you would hook into them, when they happen, and even what class of event your listener is gonna be passed. So this is really your documentation page on all the different events.
+And check this out: after the form is valid, it redirects to the confirmation page.
 
-So inside of the onRegistrationSuccess, we need to create a redirect response and set that on the event. What we're now going to do is redirect to the homepage, which means I'm going to need the router. So at the top of this, I'm going to create a public function construct. Inside here I'm gonna type in with RouterInterface router. And then this second ... and I'm gonna have the router pass as an argument here. I'm gonna hit Option+Enter and go to initialize fields and select the router. That was just a shortcut to create the private router property for me, and set it down to construct, so nothing fancy there. Now down in onRegistrationSuccess we can say url equals this error router, error generate. And we'll go to homepage, that's the name of the route we have. Then we'll say response equals new RedirectResponse. Whenever you want to redirect in Symfony, you create a redirect response inside your controller. You often use redirect to route, that's just a shortcut for creating a redirect response. We'll pass up the url. Finally, we'll say event error setResponse and we'll pass it the response. And that is it.
+## Events to the Rescue!
 
-The last thing we need to do is register this event list with Symfony. Which means we'll go and do an app config services.yml. Down at the bottom, we'll say app.redirect after registration subscriber. Set the class, set autowire to true, and by doing that, thanks to our RouterInterface typed in, Symfony will automatically pass us the router. And then we need to add a tag on the bottom, which is gonna be name kernel.event_subscriber. And that should be everything. So let's try it. Let's go back to /register. We're now gonna be aquanaut5@gmail.com. Fill in the rest of the fields. And boom. Back to our homepage. We just took massive control of that. And there's so much more, infinitely more, that you can do with events, whatever custom behavior you need, there is an event to do it.
+So at first, it seems like we need to override the controller itself. But not so
+fast! The controller - in fact *every* controller in FOSUserBundle is *littered*
+with events: `REGISTRATION_INITIALIZED`, `REGISTRATION_SUCCESS`, `REGISTRATION_COMPLETED`
+and `REGISTRATION_FAILURE`. Each of these represents a *hook* point where we can
+add custom logic.
 
-Now for extra credit, I want to add one last little difficulty here. I'm gonna logout. And quickly, if you look at my app config security.yml, you can see that you need to be logged in, in order to go to /admin/anything. So for example, if I go to /admin/genus, then it sends me to the login page. Now out of the box with Symfony's login form authentication, if we were to login right now, it would redirect us afterwards to /admin/genus, which is nice, because that's where the user clearly wants to go. But what if I register? What if I went to /admin/genus, it sent me to the login form, and then I clicked a register link? Because I wanted to register. I'll fake that by manually going to /register. Well, I really want the user, after they register, to get sent over to /admin/genus so they can continue doing what they're doing. So how can we do that?
+In this case, if you look closely, you can see that after dispatches an event called
+`REGISTRATION_SUCCESS`, below, it checks to see if the `$event` has a response
+set on it. If it doesn't, it redirects to the confirmation page. But if it *does*,
+it uses that response.
 
-Well, turns out, it's actually really, really easy. Thanks to a new trait that was added in Symfony 3.1. In your subscriber, use TargetPathTrait. And then down at onRegistrationSuccess, I want you to say url equals this arrow getTargetPath. That's a method provided you from that trait. What you do, is you need to pass the session, and then it will go look inside the session to see if there's a url that the user should be sent to after they register. In this case, how did we get this session? Well, we're lucky because you can actually say event getRequest arrow getSession. And then for the last argument, put the word main. You can see the argument here is called providerKey. Whenever you see providerKey, what they're talking about is what's the name of your firewall? Main. So if the user originally went to some page and got redirected to the login form, then url will be set to the url of that page. If not, they went to the registration page directly, that's great. We'll send them to the homepage.
+That's the key! If we can add a listener to `REGISTRATION_SUCCESS`, we can create
+our own `RedirectResponse` and set that on the event so that this controller uses
+it. Let's go!
 
-So let's try the whole flow. I'll go back to /admin/genus. It redirects me to the login page. I'll manually type /register to pretend like we're going, we clicked a registration link. Then we'll register as aquanaut6. And boom. Over to /admin/genus. That is a slick registration form.
+## Creating the Event Subscriber
+
+Inside of AppBundle, create a new directory called `EventListener`. And inside there,
+a new PHP class: how about `RedirectAfterRegistrationSubscriber`. Make this implement
+`EventSubscriberInterface`: the interface that all event subscribers must implement.
+I'll use our favorite Code->Generate menu, or Command+N on a Mac, go to
+"Implement Methods" and select `getSubscribedEvents`.
+
+We want to attach a listener to `FOSUserEvents::REGISTRATION_SUCCESS`, which, by
+the way, is just a constant that stands for some string event name.
+
+In `getSusbcribedEvents()`, add `FOSUserEvents::REGISTRATION_SUCCESS` assigned to
+`onRegistrationSuccess`. This means that when the `REGISTRATION_SUCCESS` event
+is fired, a `onRegistrationSuccess` method should be called. Add that above:
+`public function onRegistrationSuccess()`.
+
+Notice that when this event id dispatched, the bundle passes a `FormEvent` object.
+This will be the first argument to our listener method: `FormEvent $event`. That's
+what we need to set the response onto.
+
+## Investigating all the Events
+
+Before we go any further, I'll hold command and click into the `FOSUserEvents` class,
+cause it's awesome! It holds a list of *every* event dispatched by FOSUserBundle,
+what its purpose is, and what event object that you will receive. This is gold.
+
+## Creating the RedirectResponse
+
+Back in `onRegistrationSuccess`, we need to create a `RedirectResponse` and set
+it on the event. But to redirect to the homepage, we'll need the router. At the
+top of the class, create `public function __construct()` with a `RouterInterface $router`
+argument. Next, I'll hit Option+Enter, select "Initialize Fields" and
+choose `router`.
+
+That was just a shortcut to create the `private $router` property and set it in
+the constructor: nothing too fancy.
+
+Now, in `onRegistrationSuccess()` we can say `$url = $this->router->generate('homepage')`,
+and `$response = new RedirectResponse($url)`. You may or may not be familiar with
+`RedirectResponse`. In a controller, to redirect, you use `$this->redirectToRoute()`.
+In reality, that's just a shortcut for these two lines!
+
+Finally, add `$event->setResponse($response)`.
+
+Ok, this class is *perfect*! To rell Symfony about the event subscriber, head to
+`app/config/services.yml`. At the bottom, add `app.redirect_after_registration_subscriber`,
+set the class, and add `autowire: true`. By doing that, thanks to the `RouterInterface`
+type-hint, Symfony will automatically know to pass us the router.
+
+Finally, add a tag on the bottom: `name: kernel.event_subscriber`. And we are done!
+
+Try it out! Go back to `/register` and signup as `aquanaut5@gmail.com`. Fill out
+the rest of the fields and submit!
+
+Boom! Back to our homepage! You can customize just about *anything* with events.
+So don't override the controller. Instead, hook into an event!
