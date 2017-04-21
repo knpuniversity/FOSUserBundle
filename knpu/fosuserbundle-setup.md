@@ -72,7 +72,7 @@ us? In reality, just 2 things: a `User` entity and a bunch of routes and control
 for things like registration, edit password, reset password, profile and a login page.
 
 To use the `User` class from the bundle, we need to create our own small `User`
-class code that extends their's.
+class that extends their's.
 
 Inside `src/AppBundle/Entity`, create a new PHP class called `User`. To extend the
 base class, add a `use` statement for their `User` class with `as BaseUser` to avoid

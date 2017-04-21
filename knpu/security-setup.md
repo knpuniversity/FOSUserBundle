@@ -46,7 +46,7 @@ to use the secret from `parameters.yml`.
 Ok, so about 5 lines to get our entire security system working. That kicks butt!
 And now, we can hook up the login link for real. Open `app/Resources/views/base.html.twig`
 and find the static link. Add an if statement: `if is_granted('ROLE_USER')`, then
-`else` and `endif`. FOSUserBundle guarantees that every user always at least
+`else` and `endif`. FOSUserBundle guarantees that every user always at least has
 `ROLE_USER`. So it's safe to use this to figure out whether or not the user is logged
 in.
 
@@ -60,5 +60,6 @@ php bin/console debug:router
 you can see that this is one of the routes we imported. Use a similar one for login:
 just copy the logout line, and change it to login.
 
-Nice! Go back, and refresh. Hit Logout! Woohoo! Let's see what this looks like in
-the database, and talk about roles.
+Nice! Go back, and refresh. Hit Logout! Woohoo!
+
+Next, let's see what this looks like in the database, and talk about roles.
