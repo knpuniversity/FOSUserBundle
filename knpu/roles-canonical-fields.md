@@ -1,7 +1,7 @@
 # Dynamic Roles and Canonical Fields
 
 Let's see what this all looks like in the database! To query the user table,
-we canactually use the console:
+we can actually use the console:
 
 ```terminal
 php bin/console doctrine:query:sql 'SELECT * FROM user'
@@ -48,7 +48,7 @@ won't notice or care.
 
 Check out the database result again and look at `roles`. I know, it's strange: this
 is an `array` field. I'll hold command and click to open the base `User` class from
-FOSUserBundle. See, `roles` holds an array. When you save, it's automatically serializes
+FOSUserBundle. See, `roles` holds an array. When you save, it automatically serializes
 to a string in the database. This is done with the Doctrine `array` field type.
 
 Notice that even though it's empty in the database, when we login, our user has

@@ -10,17 +10,16 @@ If you don't see this, make sure you're rendering `success` flash messages in
 your base template: http://knpuniversity.com/screencast/symfony-forms/save-redirect-set-flash#rendering-the-flash-message
 ***
 
-Well, that's message lacks some spunk! How can we change it? I mean, it's probably
-being set deep in some PHP file somewhere. Do I need to override that?
+Well, that message lacks some spunk! How can we spunkify it? I mean, it's probably
+being set deep in some PHP file somewhere. Do we need to override that file?
 
 Nope! Every string you see from this bundle is being passed through the translator.
 So to change text, you just need to translate it!
 
-Back in PHPStorm, let's close a few tabs. The, I'll press Shift+Shift and look for
+Back in PHPStorm, I'll close a few tabs, then press Shift+Shift and look for
 `FOSUserBundle.en.yml`. Whenever FOSUserBundle translates something, it translates
-it through a *domain* called `FOSUSerBundle`... which isn't that important... it just
-means that when you translate its strings, they'll live in a file called
-`FOSUserBundle.{language}.yml`.
+it through a *domain* called `FOSUSerBundle`... which just means that when you translate
+its strings, they'll live in a file called `FOSUserBundle.{language}.yml`.
 
 Search for "The user has been created successfully". There it is! Under `registration`,
 `flash`, `user_created`.
@@ -28,7 +27,7 @@ Search for "The user has been created successfully". There it is! Under `registr
 ## Overriding the Translation
 
 Let's breathe some life into this translation! To do that, inside `app/Resources/translations`,
-create a new file: `FOSUserBundle.en.yml`. Then, put the same keys: `registration`, `flash`,
+create a new file: `FOSUserBundle.en.yml`. Then, add the same keys: `registration`, `flash`,
 and `user_created` with the message:
 
 > Welcome! Now let's do some science!
@@ -41,10 +40,10 @@ php bin/console cache:clear
 ```
 
 I know, you should almost *never* need to clear cache in the dev environment: this
-is one of those rare times. When you *update* this translation file, you will *not*
-need to clear the cache.
+is one of those really rare things. When you *update* this translation file, you
+will *not* need to clear the cache.
 
-Cool! Go back to /register and repeat: `aquanaut3`, `aquanaut3@gmail.com`, turtles,
+Cool! Go back to `/register` and repeat: `aquanaut3`, `aquanaut3@gmail.com`, turtles,
 turtles... and yes! Let's do some science! Great idea!
 
 Except, instead of science, let's customize some forms!

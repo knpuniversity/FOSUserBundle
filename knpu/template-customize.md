@@ -17,7 +17,7 @@ in FOSUserBundle extends *this* `layout.html.twig` file. For example, see the
 "Logged in as" text? That's coming from here.
 
 But, we want all of FOSUserBundle's templates to instead extend *our* `base.html.twig`
-template instead. How can we do that?
+template. How can we do that?
 
 ## Overriding the Layout
 
@@ -34,7 +34,7 @@ is the template for the registration page. Notice that it overrides a block call
 `fos_user_content`. In `layout.html.twig`, this is printed in the middle.
 
 So check this out: inside of our version of `layout.html.twig`, add `{% block body %}`:
-that's the name of the block our `base.html.twig`. Then, include `{% block fos_user_content %}`
+that's the name of the block in our `base.html.twig`. Then, include `{% block fos_user_content %}`
 and `{% endblock %}`.
 
 We're effectively *transferring* the content from the `fos_user_content` block to
