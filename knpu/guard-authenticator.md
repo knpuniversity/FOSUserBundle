@@ -1,61 +1,66 @@
-# Guard Authenticator
+# FOSUserBundle with a Guard Authenticator
 
-It's at this point we understand that FOSUserBundle is just a bundle that gives
-us a nice user class, and it gives us a bunch of routes and controllers for
-registration, reset password, edit profile and a few other things. If you don't
-need these, if you don't need a registration page or a reset password page,
-then you might not want to use FOSUserBundle. It's easy enough to create a user
-entity class yourself because, remember, FOSUserBundle doesn't actually provide
-any security. If we look in our app config security.yml, we're using the form
-login security. That's the core built-in security mechanism for Symphony.
-That's completely independent of FOSUserBundle.
+We *now* understand that FOSUserBundle *just* gives us a nice `User` class and some
+routes & controllers for registration, reset password, edit profile and a few other
+things. The bundle does *not* provide any authentication. Open `app/config/security.yml`.
+The `form_login` authentication mechanism we're using is core to Symfony itself,
+not this bundle.
 
-One of the questions that I get a lot is how do you use guard authentication
-with FOSUserBundle? Answer is they're two separate things, so it ends up being
-completely simple to do. First, why would you use guard with FOSUserBundle? The
-answer is sometimes form login, even though it's really easy to use, might not
-be ... Can be a little hard to customize. If you need to ... If you have really
-custom behavior after you log in successfully, or you have a really complex
-query when you log in, whatever, guard authentication gives you a little bit
-more flexibility. Let's use it.
+So, one of the questions we get a lot is: how can I use Guard authentication with
+FOSUserBundle? It turns out, it's simple! Guard authentication and FOSUserBundle
+solve different problems, and they work together beautifully. Teamwork makes the
+dream work!
 
-At the root of our project, if you download it, you should have tutorial
-directory which contains a class called login form authenticator. I'm going to
-copy this. Inside [SRC 00:01:57] app bundle, I'm going to create a new
-directory called security, then I'm going to paste the class inside of there.
-This login form authenticator is almost a copy and paste from our Symphony
-security tutorial where we created the login form authenticator. The only
-difference is I've added CSRF token checking, since our login form has a CSRF
-token in it, and I've updated a few things to work ... And I've updated a
-couple of other minor things. For example down here, the route name. Your login
-page is going to be the route name [inaudible 00:02:35] application.
+But, why would you want to use Guard authentication with FOSUserBundle? Well, as easy
+as `form_login` is, it's a pain to customize. Guard is more work up front, but gives
+you a lot more control. You can also use Guard to add some sort of API authentication
+on top of `form_login`.
 
-Other than that, this authenticator is very straightforward. It looks for an
-underscore username and underscore password field from your login form. It
-doesn't care if you built that login form yourself, or if FOSUserBundle built
-it. It queries for your user object by email only, then it checks your password
-to see if your password is valid. Obviously you can write your login form
-authenticator to do anything.
+## Creating the Authenticator
 
-To get this to work, like all authenticators, we need to register this as a
-service. I'll say app.security.login_form_authenticator, class login form
-authenticator, autowire true, then copy that service ID. Then we'll go into app
-config, security.yml and check this out. I'm going to comment out form login,
-and instead I'm going to say guard authenticators- and then paste my service
-ID. That is it. FOSUserBundle does not care who is processing our login form
-submit.
+Let's replace `form_login` with a more flexible Guard authenticator. At the root
+of our project, you should have `tutorial/` directory with a file called `LoginFormAuthenticator.php`.
+In `src/AppBundle`, create a new directory called `Security` and paste that file
+here.
 
-Let's try it. I'll click log out. I'll click login. We'll log in as our admin
-user, admin password. Log in as aquanaut5, password turtles, hit enter. Fuck,
-six. Log in as aquanaut6, password turtles. The other older users actually
-won't work anymore, because ... Oh shoot [inaudible 00:05:20]. We'll log in as
-admin@aquanote.com. Notice this still says username, but we know that our
-authenticator only logs you in via email. Then we'll say password admin, and
-boom.
+This `LoginFormAuthenticator` is almost an exact copy of the authenticator we created
+in our [Symfony Security tutorial](http://knpuniversity.com/screencast/symfony-security).
+I've just added CSRF token checking - since our HTML login form has a CSRF token
+in it - and made a few other minor tweaks. Fir example at the bottom, I updated the
+login route name to use the one from FOSUserBundle.
 
-Congratulations, you're logged in as admin and you just used guard to do it.
-You can see it's really simple, and empowers you to use FOSUserBundle because
-you want all of the registration, reset password, those types of things, but
-you can take control of your actual login mechanism and do whatever the heck
-you want. All right guys, hope we had a blast. I know I did. See you guys next
-time.
+The authenticator is very straightforward: It looks for the submitted `_username`
+and `_password` fields from the login form. It doesn't care if you built that login
+form yourself, or if it comes from FOSUserBundle. Then, it queries for your `User`
+object by email only and checks to see if the password is valid. Obviously you can
+write your authenticator to do anything.
+
+## Registering the Authenticator
+
+To get this to work, like all authenticators, we need to register it as a service.
+I'll add `app.security.login_form_authenticator`, set the class to `LoginFormAuthenticator`
+and use `autowire: true`.
+
+Copy that service ID. Then open `app/config/security.yml`. Ok, let's comment-out
+`form_login` entirely. And instead, add `guard`, `authenticators`, then paste the
+service ID.
+
+That's it! FOSUserBundle doesn't care who or what is processing the login form submit.
+
+Let's try it! Click log out, click login and login with admin@aquanote.com. Yea,
+this *does* still say "Username", but we know that our authenticator actually logs
+us in via email. So, we'll want to tweak that language. Use the password `admin`
+and... boom!
+
+Congrats! You just used a Guard authenticator with FOSUserBundle. Wasn't that nice?
+You should feel empowered to use FOSUserBundle because you want things like a registration
+page or reset password system. But, you can *still* take control of your actual login
+mechanism and do whatever the heck you want.
+
+The last part of this bundle that you'll need to customize are the emails: the reset
+password email and the registration confirmation email, if you want to send that one.
+The docs are good on this topic, and it's mostly a matter of overriding templates...
+which we already mastered.
+
+All right guys, go use FOSUserBundle to quickly bootstrap your site! As long as you
+understand what it does... and does *not* give you, it's awesome. Seeya next time!
