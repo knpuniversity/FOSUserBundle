@@ -22,7 +22,7 @@ with events: `REGISTRATION_INITIALIZED`, `REGISTRATION_SUCCESS`, `REGISTRATION_C
 and `REGISTRATION_FAILURE`. Each of these represents a *hook* point where we can
 add custom logic.
 
-In this case, if you look closely, you can see that after dit ispatches an event
+In this case, if you look closely, you can see that after it dispatches an event
 called `REGISTRATION_SUCCESS`, below, it checks to see if the `$event` has a response
 set on it. If it does not, it redirects to the confirmation page. But if it *does*,
 it uses that response.
@@ -42,13 +42,13 @@ I'll use our favorite Code->Generate menu, or Command+N on a Mac, go to
 We want to attach a listener to `FOSUserEvents::REGISTRATION_SUCCESS`, which, by
 the way, is just a constant that equals some string event name.
 
-In `getSusbcribedEvents()`, add `FOSUserEvents::REGISTRATION_SUCCESS` assigned to
+In `getSubscribedEvents()`, add `FOSUserEvents::REGISTRATION_SUCCESS` assigned to
 `onRegistrationSuccess`. This means that when the `REGISTRATION_SUCCESS` event
 is fired, the `onRegistrationSuccess` method should be called. Create that above:
 `public function onRegistrationSuccess()`.
 
 Oh, and notice that when this event is dispatched, the bundle passes a `FormEvent`
-object. Thta will be the first argument to our listener method: `FormEvent $event`.
+object. That will be the first argument to our listener method: `FormEvent $event`.
 That's what we need to set the response onto.
 
 ## Investigating all the Events
@@ -87,3 +87,4 @@ the rest of the fields and submit!
 
 Boom! Back to our homepage! You can customize just about *anything* with events.
 So don't override the controller. Instead, hook into an event!
+ 

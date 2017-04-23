@@ -45,7 +45,7 @@ existing form?
 
 ## Extending the Core Form
 
-totally! And once again, the web debug toolbar can help us out. Mouse over the
+Totally! And once again, the web debug toolbar can help us out. Mouse over the
 form icon and click that. This tells us what form is used on this page: it's called
 `RegistrationFormType` - the same as our form class!
 

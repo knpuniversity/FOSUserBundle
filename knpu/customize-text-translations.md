@@ -18,7 +18,7 @@ So to change text, you just need to translate it!
 
 Back in PHPStorm, I'll close a few tabs, then press Shift+Shift and look for
 `FOSUserBundle.en.yml`. Whenever FOSUserBundle translates something, it translates
-it through a *domain* called `FOSUSerBundle`... which just means that when you translate
+it through a *domain* called `FOSUserBundle`... which just means that when you translate
 its strings, they'll live in a file called `FOSUserBundle.{language}.yml`.
 
 Search for "The user has been created successfully". There it is! Under `registration`,
