@@ -58,6 +58,8 @@ file and paste it to enable the bundle. Oh, and FOSUserBundle uses `SwiftmailerB
 to send the password reset and registration confirmation emails. So, uncomment that.
 You can also create your own custom mailer or tell FOSUserBundle to not send emails.
 
+[[[ code('ffc6ad0dd3') ]]]
+
 Ok, flip back to your terminal. Bah! It exploded! Ok, it *did* install FOSUserBundle.
 So, let's not panic people. It just went crazy while trying to clear the cache:
 
@@ -78,15 +80,21 @@ Inside `src/AppBundle/Entity`, create a new PHP class called `User`. To extend t
 base class, add a `use` statement for their `User` class with `as BaseUser` to avoid
 a lame conflict. Then add, `extends BaseUser`.
 
+[[[ code('d657ed76eb') ]]]
+
 There's just one thing we *must* do in this class: add a `protected $id` property.
 Beyond that, this is just a normal entity class. So I'll go to the Code->Generate
 menu - or Command+N on a Mac - and choose `ORM Class` to get my fancy `@ORM\Entity`
 stuff on top. Add ticks around the `user` table name - that's a keyword in some
 database engines.
 
+[[[ code('76caa81b23') ]]]
+
 Now, go back to Code->Generate, choose `ORM Annotation` and select the `id` column.
 Boom! We are annotated! Finally, go back to Code->Generate *one* last time... until
 we do it more later - and generate the `getId()` method.
+
+[[[ code('17ee472751') ]]]
 
 This class is done!
 
@@ -105,6 +113,8 @@ You can see that key in `security.yml`.
 
 And yea, the `user_class` is also correct. We're crushing it! For the email stuff,
 it doesn't matter, use `hello@aquanote.com` and `AquaNote Postman`.
+
+[[[ code('5330d3de53') ]]]
 
 ## Generate the Migraiton
 
@@ -145,6 +155,8 @@ down a bit until you see step 6: Import FOSUserBundle routing files. Ah ha! Copy
 that routing import.
 
 Find your `app/config/routing.yml` file and paste that on top.
+
+[[[ code('a549b6ed16') ]]]
 
 As *soon* as you do that, we have new routes! At your terminal, check them out:
 
@@ -188,9 +200,13 @@ work. In `security.yml`, add an `encoders` key with `AppBundle\Entity\User` set
 to `bcrypt`. When we register, FOSUserBundle needs to encode the plain-text password
 before saving it. This tells it what algorithm to use.
 
+[[[ code('28ceb37f8e') ]]]
+
 There's one other small bit of security we need right now. In the documentation,
 under step 4, copy the `providers` key. Paste that over the old `providers` key
 in `security.yml`.
+
+[[[ code('628eb7e8c7') ]]]
 
 I'll talk about this more in a few minutes, but it's needed for registration only
 because FOSUserBundle logs us in after registering... which is really nice!
