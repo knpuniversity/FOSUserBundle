@@ -21,6 +21,8 @@ if you go to `/logout`, you see an error message. This is coming from that same
 controller: FOSUserBundle gives us a `/logout` route, but its controller is never
 supposed to be called. To fix this, in `security.yml`, add `logout: ~`. That's it.
 
+[[[ code('c708e0062b') ]]]
+
 Try going to `/logout` again. It works! We are anonymous! By adding the `logout`
 key, Symfony is now waiting for us to go to `/logout`. When we do, it *intercepts*
 the request and logs us out. Other than giving us the `/logout` route, FOSUserBundle
@@ -33,6 +35,8 @@ That's actually all you need. But, I'll add a bit more: `csrf_token_generator: s
 That will make sure the CSRF token - which is already added in the FOSUserBundle
 login template - is verified when we submit.
 
+[[[ code('40146e9528') ]]]
+
 As *soon* as we do that, go to `/login` and login with `aquanaut1` password `turtles`.
 Winning! We are in! FOSUserBundle gives us a login form, but *we* need to take
 care of the rest... which is pretty easy.
@@ -43,6 +47,8 @@ Oh, and on the login form, we also have a remember me checkbox. If you want this
 to work, you'll need to add one more setting: `remember_me:` with `secret: '%secret%'`
 to use the secret from `parameters.yml`.
 
+[[[ code('9d3b1f2fa8') ]]]
+
 Ok, so about 5 lines to get our entire security system working. That kicks butt!
 And now, we can hook up the login link for real. Open `app/Resources/views/base.html.twig`
 and find the static link. Add an if statement: `if is_granted('ROLE_USER')`, then
@@ -50,8 +56,12 @@ and find the static link. Add an if statement: `if is_granted('ROLE_USER')`, the
 `ROLE_USER`. So it's safe to use this to figure out whether or not the user is logged
 in.
 
+[[[ code('1c2fe2d585') ]]]
+
 For the logout link, use the route `fos_user_security_logout`, then we'll say "Logout".
 Oh, put all of this stuff inside an `li` tag. If you run:
+
+[[[ code('1e93e87a07') ]]]
 
 ```terminal
 php bin/console debug:router
@@ -59,6 +69,8 @@ php bin/console debug:router
 
 you can see that this is one of the routes we imported. Use a similar one for login:
 just copy the logout line, and change it to login.
+
+[[[ code('edc40ab429') ]]]
 
 Nice! Go back, and refresh. Hit Logout! Woohoo!
 
