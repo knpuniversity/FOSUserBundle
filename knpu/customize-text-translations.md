@@ -32,6 +32,8 @@ and `user_created` with the message:
 
 > Welcome! Now let's do some science!
 
+[[[ code('2664ad234f') ]]]
+
 Since this is a brand new translation file, you'll need to clear you cache for Symfony
 to see it:
 
