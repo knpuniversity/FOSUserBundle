@@ -10,7 +10,7 @@ If you don't see this, make sure you're rendering `success` flash messages in
 your base template: http://knpuniversity.com/screencast/symfony-forms/save-redirect-set-flash#rendering-the-flash-message
 ***
 
-Well, that message lacks some spunk! How can we spunkify it? I mean, it's probably
+Well, that message lacks some pizzaz! How can we give it some personality? I mean, it's probably
 being set deep in some PHP file somewhere. Do we need to override that file?
 
 Nope! Every string you see from this bundle is being passed through the translator.
@@ -31,6 +31,8 @@ create a new file: `FOSUserBundle.en.yml`. Then, add the same keys: `registratio
 and `user_created` with the message:
 
 > Welcome! Now let's do some science!
+
+[[[ code('2664ad234f') ]]]
 
 Since this is a brand new translation file, you'll need to clear you cache for Symfony
 to see it:

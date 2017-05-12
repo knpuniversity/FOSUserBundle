@@ -29,6 +29,8 @@ In this case, the `layout.html.twig` template lives right the root of the `views
 directory in the bundle. So that's where we need to create our's. Inside, extend
 the normal `base.html.twig`. 
 
+[[[ code('a2bd06d299') ]]]
+
 Here's the magic part. Hit Shift+Shift again and open `register.html.twig`: this
 is the template for the registration page. Notice that it overrides a block called
 `fos_user_content`. In `layout.html.twig`, this is printed in the middle.
@@ -37,12 +39,16 @@ So check this out: inside of our version of `layout.html.twig`, add `{% block bo
 that's the name of the block in our `base.html.twig`. Then, include `{% block fos_user_content %}`
 and `{% endblock %}`.
 
+[[[ code('a381314dff') ]]]
+
 We're effectively *transferring* the content from the `fos_user_content` block to
 the correct block: `body`.
 
 These 5 lines of code are *huge*. Refresh the page! Ha! So much better! Not perfect,
 but every page now lives in our layout. If you want, you can even add a little more
 markup around the block.
+
+[[[ code('1466a17f63') ]]]
 
 ## Overriding Individual Templates
 
@@ -71,6 +77,8 @@ create a `Registration` directory. I'm doing that because this template lives in
 a `Registration` directory. Finally, create `register_content.html.twig` and paste
 in the content. Let's add a couple of classes to the button and an h1 that says:
 "Register Aquanauts!"
+
+[[[ code('7e1481696d') ]]]
 
 Ok, refresh! Love it! In your app, make sure to do this for all of the different
 pages from the bundle that you're using. And remember, if you don't need a page -

@@ -14,6 +14,8 @@ Start in the `User` class. I'll go to the Code->Generate menu - or Command+N on 
 Mac - go to "Override Methods" and choose `setEmail()`. Before the parent call,
 add `$this->setUsername($email)`.
 
+[[[ code('e3befd9c09') ]]]
+
 This is big! Thanks to this, we no longer need to worry about *ever* setting the
 `username` field. In the database, `username` will always equal the `email`... which
 is definitely redundant and unnecessary, but in practice, it works fine.
@@ -23,7 +25,11 @@ is definitely redundant and unnecessary, but in practice, it works fine.
 The only other thing we need to do is remove the `username` field from the registration
 form. How? Easy: in `RegistrationFormType`, add `->remove('username')`.
 
+[[[ code('c637e72a3e') ]]]
+
 Then, in the template, remove its `form_row()`.
+
+[[[ code('a6d3131d33') ]]]
 
 And yea, that's it! Refresh! No more username! Register as `aquanaut4@gmail.com`
 and submit. Check it out in the database:

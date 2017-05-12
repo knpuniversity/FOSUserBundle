@@ -10,6 +10,8 @@ fields we want, like `private $firstName`. I'll go to Code->Generate, or Command
 on a Mac, then select "ORM Annoations" to annotate `firstName`. Then I'll go back
 to Code->Generate to add the getter and setter methods.
 
+[[[ code('ac1a6d39c5') ]]]
+
 Notice, right now, `firstName` is *not* nullable... meaning it's *required* in the
 database... and that's fine! If `firstName` is optional in your app, you can of course
 add `nullable=true`. I'm mentioning this for one reason: if you add *any* required
@@ -38,6 +40,8 @@ In `src/AppBundle`, create a new `Form` directory and a new class called `Regist
 Extend the normal `AbstractType`. Then, I'll use Code->Generate Menu or Command+N
 to override the `buildForm()` method. Inside, just say `$builder->add('firstName')`.
 
+[[[ code('8f3eb4f910') ]]]
+
 In a minute, we'll tell FOSUserBundle to use *this* form instead of its normal
 registration form. But... instead of completely *replacing* the default form, what
 I *really* want to do is just *add* one field to it. Is there a way to extend the
@@ -56,6 +60,8 @@ put `as BaseRegistrationFormType` to avoid conflicting.
 
 Now in `getParent()`, we can say `return BaseRegistrationFormType::class`.
 
+[[[ code('7bb91e50ad') ]]]
+
 And that is it! This form will have the existing fields *plus* `firstName`.
 
 ## Registering the Form with FOSUserBundle
@@ -64,6 +70,8 @@ To tell FOSUserBundle about *our* form, we need to do two things. First, registe
 this as a service. In my `app/config/services.yml`, add `app.form.registration`
 with `class` set to the `RegistrationFormType`. It also needs to be tagged with
 `name: form.type`.
+
+[[[ code('8fb166c8e1') ]]]
 
 Finally, copy the class name and go into `app/config/config.yml`. This bundle has
 a *lot* of configuration. And at the bottom of the documentation page, you can
@@ -78,6 +86,8 @@ everything right in front of me. And we can see what we're looking for under
 Go back to your editor and add those: `registration`, `form` and `type`. Paste
 our class name!
 
+[[[ code('66fb9cfa95') ]]]
+
 And... we're done! Go back to registration and refresh. We got it! And that *will*
 save when we submit.
 
@@ -88,6 +98,8 @@ we're using `form_widget(form)`... which just dumps out the fields in whatever
 order they were added. Need more control? Cool: remove that and instead use
 `form_row(form.email)`, `form_row(form.username)`, `form_row(form.firstName)` and
 `form_row(form.plainPassword)`.
+
+[[[ code('9af61a08a1') ]]]
 
 If you're not sure what the field names are called, again, use your web debug toolbar
 for the form: it shows you everything.

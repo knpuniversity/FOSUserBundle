@@ -39,6 +39,8 @@ a new PHP class: how about `RedirectAfterRegistrationSubscriber`. Make this impl
 I'll use our favorite Code->Generate menu, or Command+N on a Mac, go to
 "Implement Methods" and select `getSubscribedEvents`.
 
+[[[ code('1d3893a9a7') ]]]
+
 We want to attach a listener to `FOSUserEvents::REGISTRATION_SUCCESS`, which, by
 the way, is just a constant that equals some string event name.
 
@@ -46,6 +48,8 @@ In `getSubscribedEvents()`, add `FOSUserEvents::REGISTRATION_SUCCESS` assigned t
 `onRegistrationSuccess`. This means that when the `REGISTRATION_SUCCESS` event
 is fired, the `onRegistrationSuccess` method should be called. Create that above:
 `public function onRegistrationSuccess()`.
+
+[[[ code('d868577943') ]]]
 
 Oh, and notice that when this event is dispatched, the bundle passes a `FormEvent`
 object. That will be the first argument to our listener method: `FormEvent $event`.
@@ -65,6 +69,8 @@ top of the class, create `public function __construct()` with a `RouterInterface
 argument. Next, I'll hit Option+Enter, select "Initialize Fields" and
 choose `router`.
 
+[[[ code('09df5ac847') ]]]
+
 That was just a shortcut to create the `private $router` property and set it in
 the constructor: nothing fancy.
 
@@ -75,12 +81,16 @@ In reality, that's just a shortcut for these two lines!
 
 Finally, add `$event->setResponse($response)`.
 
+[[[ code('1f72f2a493') ]]]
+
 Ok, this class is *perfect*! To tell Symfony about the event subscriber, head to
 `app/config/services.yml`. At the bottom, add `app.redirect_after_registration_subscriber`,
 set the class, and add `autowire: true`. By doing that, thanks to the `RouterInterface`
 type-hint, Symfony will automatically know to pass us the router.
 
 Finally, add a tag on the bottom: `name: kernel.event_subscriber`. And we are done!
+
+[[[ code('51fce9e66a') ]]]
 
 Try it out! Go back to `/register` and signup as `aquanaut5@gmail.com`. Fill out
 the rest of the fields and submit!

@@ -25,6 +25,8 @@ Guess what? It's almost *effortless*, thanks to a trait that was added in Symfon
 by that trait. Pass this `$event->getRequest()->getSession()` and for the "provider key"
 argument, pass `main`. Provider key is a fancy term for your firewall's name.
 
+[[[ code('c533e7c3cb') ]]]
+
 What's going on here? Well, whenever you try to access a secured page anonymously,
 Symfony stores that URL somewhere in the session before redirecting you to the login
 page. Then `form_login` uses that to redirect you after you authenticate. The `TargetPathTrait`
@@ -32,6 +34,8 @@ is just a shortcut for *us* to read that *same* key from the session.
 
 If `$url` is empty - it means the user went directly to the registration page. No
 worries! Just send them to the homepage.
+
+[[[ code('c533e7c3cb') ]]]
 
 Let's try the *entire* flow. I'll go back to `/admin/genus`: it redirects me to
 the login page and sets that session key behind the scenes. Then, I'll manually
