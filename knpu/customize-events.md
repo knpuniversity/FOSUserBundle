@@ -18,7 +18,7 @@ And check this out: after the form is valid, it redirects to the confirmation pa
 
 So at first, it seems like we need to override the controller itself. But not so
 fast! The controller - in fact *every* controller in FOSUserBundle is *littered*
-with events: `REGISTRATION_INITIALIZED`, `REGISTRATION_SUCCESS`, `REGISTRATION_COMPLETED`
+with events: `REGISTRATION_INITIALIZE`, `REGISTRATION_SUCCESS`, `REGISTRATION_COMPLETED`
 and `REGISTRATION_FAILURE`. Each of these represents a *hook* point where we can
 add custom logic.
 

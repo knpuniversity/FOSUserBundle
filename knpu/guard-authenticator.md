@@ -1,4 +1,4 @@
-# FOSUserBundle with a Guard Authenticator
+# FOSUserBundle <3's Guard Authenticators
 
 We *now* understand that FOSUserBundle *just* gives us a nice `User` class and some
 routes & controllers for registration, reset password, edit profile and a few other
@@ -26,7 +26,7 @@ here.
 This `LoginFormAuthenticator` is almost an exact copy of the authenticator we created
 in our [Symfony Security tutorial](http://knpuniversity.com/screencast/symfony-security).
 I've just added CSRF token checking - since our HTML login form has a CSRF token
-in it - and made a few other minor tweaks. Fir example at the bottom, I updated the
+in it - and made a few other minor tweaks. For example at the bottom, I updated the
 login route name to use the one from FOSUserBundle.
 
 The authenticator is very straightforward: It looks for the submitted `_username`
