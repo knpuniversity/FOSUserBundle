@@ -23,6 +23,8 @@ of our project, you should have `tutorial/` directory with a file called `LoginF
 In `src/AppBundle`, create a new directory called `Security` and paste that file
 here.
 
+[[[ code('46305e4007') ]]]
+
 This `LoginFormAuthenticator` is almost an exact copy of the authenticator we created
 in our [Symfony Security tutorial](http://knpuniversity.com/screencast/symfony-security).
 I've just added CSRF token checking - since our HTML login form has a CSRF token
@@ -41,9 +43,13 @@ To get this to work, like all authenticators, we need to register it as a servic
 I'll add `app.security.login_form_authenticator`, set the class to `LoginFormAuthenticator`
 and use `autowire: true`.
 
+[[[ code('a458eb6e23') ]]]
+
 Copy that service ID. Then open `app/config/security.yml`. Ok, let's comment-out
 `form_login` entirely. And instead, add `guard`, `authenticators`, then paste the
 service ID.
+
+[[[ code('9efbd45740') ]]]
 
 That's it! FOSUserBundle doesn't care who or what is processing the login form submit.
 
