@@ -35,7 +35,7 @@ is just a shortcut for *us* to read that *same* key from the session.
 If `$url` is empty - it means the user went directly to the registration page. No
 worries! Just send them to the homepage.
 
-[[[ code('c533e7c3cb') ]]]
+[[[ code('da633d851c') ]]]
 
 Let's try the *entire* flow. I'll go back to `/admin/genus`: it redirects me to
 the login page and sets that session key behind the scenes. Then, I'll manually
