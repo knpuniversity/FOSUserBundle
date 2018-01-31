@@ -25,6 +25,10 @@ By overriding `layout.html.twig`. Let's see how. First, to override *any* templa
 from a bundle, just go to `app/Resources`, then create a directory with the same
 name as the bundle: `FOSUserBundle`. Inside, create one more directory: `views`.
 
+***TIP
+The location where templates should live to override bundle templates has changed in Symfony 4. But, the idea is still the same. For details, see: [https://symfony.com/blog/new-in-symfony-3-4-improved-the-overriding-of-templates](https://symfony.com/blog/new-in-symfony-3-4-improved-the-overriding-of-templates).
+***
+
 In this case, the `layout.html.twig` template lives right the root of the `views/`
 directory in the bundle. So that's where we need to create our's. Inside, extend
 the normal `base.html.twig`. 
