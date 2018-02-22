@@ -116,7 +116,7 @@ it doesn't matter, use `hello@aquanote.com` and `AquaNote Postman`.
 
 [[[ code('5330d3de53') ]]]
 
-## Generate the Migraiton
+## Generate the Migration
 
 *Finally*, our app should be un-broken! Try the console:
 
