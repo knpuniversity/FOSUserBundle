@@ -18,8 +18,24 @@ index d6fac03..9c91892 100644
  
              new AppBundle\AppBundle(),
          );
+diff --git a/app/config/config.yml b/app/config/config.yml
+index e57496a..738a56a 100644
+--- a/app/config/config.yml
++++ b/app/config/config.yml
+@@ -71,3 +71,11 @@ doctrine_cache:
+             type: %cache_type%
+             file_system:
+                 directory: %kernel.cache_dir%/markdown_cache
++
++fos_user:
++    db_driver: orm
++    firewall_name: main
++    user_class: AppBundle\Entity\User
++    from_email:
++        address: "hello@aquanote.com"
++        sender_name: "AquaNote Postman"
 diff --git a/composer.json b/composer.json
-index 251233d..a30d4da 100644
+index 9a2eca6..7fc3f15 100644
 --- a/composer.json
 +++ b/composer.json
 @@ -26,7 +26,8 @@
@@ -33,22 +49,236 @@ index 251233d..a30d4da 100644
      "require-dev": {
          "sensio/generator-bundle": "^3.0",
 diff --git a/composer.lock b/composer.lock
-index 521b8df..42a36dd 100644
+index 605f543..8c1994d 100644
 --- a/composer.lock
 +++ b/composer.lock
 @@ -4,7 +4,7 @@
-         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
          "This file is @generated automatically"
      ],
--    "content-hash": "c14025000a1874e841dc1ce721a1fcac",
-+    "content-hash": "13b873ab79e38361c707f7b33f341cf9",
+-    "content-hash": "942fa2f11b632aadd597bae80f714548",
++    "content-hash": "7274c79deed6019e37c2fe21b1f4fb14",
      "packages": [
          {
              "name": "composer/ca-bundle",
-@@ -970,6 +970,83 @@
-             "time": "2016-12-18T15:42:34+00:00"
+@@ -547,39 +547,39 @@
          },
          {
+             "name": "doctrine/doctrine-cache-bundle",
+-            "version": "1.3.2",
++            "version": "1.3.5",
+             "source": {
+                 "type": "git",
+                 "url": "https://github.com/doctrine/DoctrineCacheBundle.git",
+-                "reference": "9baecbd6bfdd1123b0cf8c1b88fee0170a84ddd1"
++                "reference": "5514c90d9fb595e1095e6d66ebb98ce9ef049927"
+             },
+             "dist": {
+                 "type": "zip",
+-                "url": "https://api.github.com/repos/doctrine/DoctrineCacheBundle/zipball/9baecbd6bfdd1123b0cf8c1b88fee0170a84ddd1",
+-                "reference": "9baecbd6bfdd1123b0cf8c1b88fee0170a84ddd1",
++                "url": "https://api.github.com/repos/doctrine/DoctrineCacheBundle/zipball/5514c90d9fb595e1095e6d66ebb98ce9ef049927",
++                "reference": "5514c90d9fb595e1095e6d66ebb98ce9ef049927",
+                 "shasum": ""
+             },
+             "require": {
+                 "doctrine/cache": "^1.4.2",
+                 "doctrine/inflector": "~1.0",
+                 "php": ">=5.3.2",
+-                "symfony/doctrine-bridge": "~2.2|~3.0|~4.0"
++                "symfony/doctrine-bridge": "~2.7|~3.3|~4.0"
+             },
+             "require-dev": {
+                 "instaclick/coding-standard": "~1.1",
+                 "instaclick/object-calisthenics-sniffs": "dev-master",
+                 "instaclick/symfony2-coding-standard": "dev-remaster",
+-                "phpunit/phpunit": "~4",
++                "phpunit/phpunit": "~4.8.36|~5.6|~6.5|~7.0",
+                 "predis/predis": "~0.8",
+                 "satooshi/php-coveralls": "^1.0",
+                 "squizlabs/php_codesniffer": "~1.5",
+-                "symfony/console": "~2.2|~3.0|~4.0",
+-                "symfony/finder": "~2.2|~3.0|~4.0",
+-                "symfony/framework-bundle": "~2.2|~3.0|~4.0",
+-                "symfony/phpunit-bridge": "~2.7|~3.0|~4.0",
+-                "symfony/security-acl": "~2.3|~3.0",
+-                "symfony/validator": "~2.2|~3.0|~4.0",
+-                "symfony/yaml": "~2.2|~3.0|~4.0"
++                "symfony/console": "~2.7|~3.3|~4.0",
++                "symfony/finder": "~2.7|~3.3|~4.0",
++                "symfony/framework-bundle": "~2.7|~3.3|~4.0",
++                "symfony/phpunit-bridge": "~2.7|~3.3|~4.0",
++                "symfony/security-acl": "~2.7|~3.3",
++                "symfony/validator": "~2.7|~3.3|~4.0",
++                "symfony/yaml": "~2.7|~3.3|~4.0"
+             },
+             "suggest": {
+                 "symfony/security-acl": "For using this bundle to cache ACLs"
+@@ -593,7 +593,10 @@
+             "autoload": {
+                 "psr-4": {
+                     "Doctrine\\Bundle\\DoctrineCacheBundle\\": ""
+-                }
++                },
++                "exclude-from-classmap": [
++                    "/Tests/"
++                ]
+             },
+             "notification-url": "https://packagist.org/downloads/",
+             "license": [
+@@ -626,40 +629,40 @@
+                 }
+             ],
+             "description": "Symfony Bundle for Doctrine Cache",
+-            "homepage": "http://www.doctrine-project.org",
++            "homepage": "https://www.doctrine-project.org",
+             "keywords": [
+                 "cache",
+                 "caching"
+             ],
+-            "time": "2017-10-12T17:23:29+00:00"
++            "time": "2018-11-09T06:25:35+00:00"
+         },
+         {
+             "name": "doctrine/doctrine-migrations-bundle",
+-            "version": "v1.2.1",
++            "version": "v1.3.2",
+             "source": {
+                 "type": "git",
+                 "url": "https://github.com/doctrine/DoctrineMigrationsBundle.git",
+-                "reference": "6276139e0b913a4e5120fc36bb5b0eae8ac549bc"
++                "reference": "49fa399181db4bf4f9f725126bd1cb65c4398dce"
+             },
+             "dist": {
+                 "type": "zip",
+-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/6276139e0b913a4e5120fc36bb5b0eae8ac549bc",
+-                "reference": "6276139e0b913a4e5120fc36bb5b0eae8ac549bc",
++                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/49fa399181db4bf4f9f725126bd1cb65c4398dce",
++                "reference": "49fa399181db4bf4f9f725126bd1cb65c4398dce",
+                 "shasum": ""
+             },
+             "require": {
+                 "doctrine/doctrine-bundle": "~1.0",
+                 "doctrine/migrations": "^1.1",
+                 "php": ">=5.4.0",
+-                "symfony/framework-bundle": "~2.3|~3.0"
++                "symfony/framework-bundle": "~2.7|~3.3|~4.0"
+             },
+             "require-dev": {
+-                "phpunit/phpunit": "~4.8"
++                "phpunit/phpunit": "^4.8.36 || ^5.7.27 || ^7.4"
+             },
+             "type": "symfony-bundle",
+             "extra": {
+                 "branch-alias": {
+-                    "dev-master": "1.2-dev"
++                    "dev-master": "1.3-dev"
+                 }
+             },
+             "autoload": {
+@@ -692,7 +695,7 @@
+                 "migrations",
+                 "schema"
+             ],
+-            "time": "2016-12-05T18:36:37+00:00"
++            "time": "2018-12-03T11:55:33+00:00"
+         },
+         {
+             "name": "doctrine/event-manager",
+@@ -957,37 +960,36 @@
+         },
+         {
+             "name": "doctrine/migrations",
+-            "version": "v1.5.0",
++            "version": "v1.8.1",
+             "source": {
+                 "type": "git",
+                 "url": "https://github.com/doctrine/migrations.git",
+-                "reference": "c81147c0f2938a6566594455367e095150547f72"
++                "reference": "215438c0eef3e5f9b7da7d09c6b90756071b43e6"
+             },
+             "dist": {
+                 "type": "zip",
+-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/c81147c0f2938a6566594455367e095150547f72",
+-                "reference": "c81147c0f2938a6566594455367e095150547f72",
++                "url": "https://api.github.com/repos/doctrine/migrations/zipball/215438c0eef3e5f9b7da7d09c6b90756071b43e6",
++                "reference": "215438c0eef3e5f9b7da7d09c6b90756071b43e6",
+                 "shasum": ""
+             },
+             "require": {
+-                "doctrine/dbal": "~2.2",
++                "doctrine/dbal": "~2.6",
+                 "ocramius/proxy-manager": "^1.0|^2.0",
+-                "php": "^5.5|^7.0",
+-                "symfony/console": "~2.3|~3.0",
+-                "symfony/yaml": "~2.3|~3.0"
++                "php": "^7.1",
++                "symfony/console": "~3.3|^4.0"
+             },
+             "require-dev": {
+-                "doctrine/coding-standard": "dev-master",
+-                "doctrine/orm": "2.*",
++                "doctrine/coding-standard": "^1.0",
++                "doctrine/orm": "~2.5",
+                 "jdorn/sql-formatter": "~1.1",
+-                "johnkary/phpunit-speedtrap": "~1.0@dev",
+                 "mikey179/vfsstream": "^1.6",
+-                "mockery/mockery": "^0.9.4",
+-                "phpunit/phpunit": "~4.7",
+-                "satooshi/php-coveralls": "^1.0"
++                "phpunit/phpunit": "~7.0",
++                "squizlabs/php_codesniffer": "^3.0",
++                "symfony/yaml": "~3.3|^4.0"
+             },
+             "suggest": {
+-                "jdorn/sql-formatter": "Allows to generate formatted SQL with the diff command."
++                "jdorn/sql-formatter": "Allows to generate formatted SQL with the diff command.",
++                "symfony/yaml": "Allows the use of yaml for migration configuration files."
+             },
+             "bin": [
+                 "bin/doctrine-migrations"
+@@ -995,17 +997,18 @@
+             "type": "library",
+             "extra": {
+                 "branch-alias": {
+-                    "dev-master": "v1.6.x-dev"
++                    "dev-master": "v1.8.x-dev"
+                 }
+             },
+             "autoload": {
+                 "psr-4": {
+-                    "Doctrine\\DBAL\\Migrations\\": "lib/Doctrine/DBAL/Migrations"
++                    "Doctrine\\DBAL\\Migrations\\": "lib/Doctrine/DBAL/Migrations",
++                    "Doctrine\\Migrations\\": "lib/Doctrine/Migrations"
+                 }
+             },
+             "notification-url": "https://packagist.org/downloads/",
+             "license": [
+-                "LGPL-2.1"
++                "MIT"
+             ],
+             "authors": [
+                 {
+@@ -1022,12 +1025,12 @@
+                 }
+             ],
+             "description": "Database Schema migrations using Doctrine DBAL",
+-            "homepage": "http://www.doctrine-project.org",
++            "homepage": "https://www.doctrine-project.org/projects/migrations.html",
+             "keywords": [
+                 "database",
+                 "migrations"
+             ],
+-            "time": "2016-12-25T22:54:00+00:00"
++            "time": "2018-06-06T21:00:30+00:00"
+         },
+         {
+             "name": "doctrine/orm",
+@@ -1330,6 +1333,83 @@
+             ],
+             "time": "2019-12-18T15:40:05+00:00"
+         },
++        {
 +            "name": "friendsofsymfony/user-bundle",
 +            "version": "v2.0.0",
 +            "source": {
@@ -125,7 +355,56 @@ index 521b8df..42a36dd 100644
 +            ],
 +            "time": "2017-03-29T13:21:34+00:00"
 +        },
-+        {
+         {
              "name": "incenteev/composer-parameter-handler",
              "version": "v2.1.2",
+@@ -1741,29 +1821,33 @@
+         },
+         {
+             "name": "paragonie/random_compat",
+-            "version": "v9.99.99",
++            "version": "v2.0.18",
              "source": {
+                 "type": "git",
+                 "url": "https://github.com/paragonie/random_compat.git",
+-                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95"
++                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db"
+             },
+             "dist": {
+                 "type": "zip",
+-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
+-                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
++                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
++                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
+                 "shasum": ""
+             },
+             "require": {
+-                "php": "^7"
++                "php": ">=5.2.0"
+             },
+             "require-dev": {
+-                "phpunit/phpunit": "4.*|5.*",
+-                "vimeo/psalm": "^1"
++                "phpunit/phpunit": "4.*|5.*"
+             },
+             "suggest": {
+                 "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+             },
+             "type": "library",
++            "autoload": {
++                "files": [
++                    "lib/random.php"
++                ]
++            },
+             "notification-url": "https://packagist.org/downloads/",
+             "license": [
+                 "MIT"
+@@ -1782,7 +1866,7 @@
+                 "pseudorandom",
+                 "random"
+             ],
+-            "time": "2018-07-02T15:55:56+00:00"
++            "time": "2019-01-03T20:59:08+00:00"
+         },
+         {
+             "name": "psr/cache",
