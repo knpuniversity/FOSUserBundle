@@ -35,33 +35,33 @@ index e57496a..738a56a 100644
 +        address: "hello@aquanote.com"
 +        sender_name: "AquaNote Postman"
 diff --git a/composer.json b/composer.json
-index 3d87bf1..e86910e 100644
+index d0f4fcd..bd0a661 100644
 --- a/composer.json
 +++ b/composer.json
-@@ -26,7 +26,8 @@
-         "sensio/framework-extra-bundle": "^3.0.2",
+@@ -27,7 +27,8 @@
          "incenteev/composer-parameter-handler": "^2.0",
          "knplabs/knp-markdown-bundle": "^1.4",
--        "doctrine/doctrine-migrations-bundle": "^1.1"
-+        "doctrine/doctrine-migrations-bundle": "^1.1",
+         "doctrine/doctrine-migrations-bundle": "^1.1",
+-        "composer/package-versions-deprecated": "^1.11"
++        "composer/package-versions-deprecated": "^1.11",
 +        "friendsofsymfony/user-bundle": "^2.0"
      },
      "require-dev": {
          "sensio/generator-bundle": "^3.0",
 diff --git a/composer.lock b/composer.lock
-index 034d247..73d8686 100644
+index d6eedf5..3410552 100644
 --- a/composer.lock
 +++ b/composer.lock
 @@ -4,7 +4,7 @@
          "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
          "This file is @generated automatically"
      ],
--    "content-hash": "cb1e2466d33f17378e878bb3b1c22e62",
-+    "content-hash": "4e801fcbb71691823512c322db0bc82a",
+-    "content-hash": "dd7feb21b6f9f148a3e6b4ed4ead631a",
++    "content-hash": "42eba5f2c5e01fe0d1ce0b0a0b15d711",
      "packages": [
          {
              "name": "composer/ca-bundle",
-@@ -538,39 +538,39 @@
+@@ -611,39 +611,39 @@
          },
          {
              "name": "doctrine/doctrine-cache-bundle",
@@ -114,7 +114,7 @@ index 034d247..73d8686 100644
              },
              "suggest": {
                  "symfony/security-acl": "For using this bundle to cache ACLs"
-@@ -584,7 +584,10 @@
+@@ -657,7 +657,10 @@
              "autoload": {
                  "psr-4": {
                      "Doctrine\\Bundle\\DoctrineCacheBundle\\": ""
@@ -126,7 +126,7 @@ index 034d247..73d8686 100644
              },
              "notification-url": "https://packagist.org/downloads/",
              "license": [
-@@ -617,40 +620,40 @@
+@@ -690,40 +693,40 @@
                  }
              ],
              "description": "Symfony Bundle for Doctrine Cache",
@@ -176,7 +176,7 @@ index 034d247..73d8686 100644
                  }
              },
              "autoload": {
-@@ -683,7 +686,7 @@
+@@ -756,7 +759,7 @@
                  "migrations",
                  "schema"
              ],
@@ -185,7 +185,7 @@ index 034d247..73d8686 100644
          },
          {
              "name": "doctrine/event-manager",
-@@ -946,37 +949,36 @@
+@@ -1019,37 +1022,36 @@
          },
          {
              "name": "doctrine/migrations",
@@ -237,7 +237,7 @@ index 034d247..73d8686 100644
              },
              "bin": [
                  "bin/doctrine-migrations"
-@@ -984,17 +986,18 @@
+@@ -1057,17 +1059,18 @@
              "type": "library",
              "extra": {
                  "branch-alias": {
@@ -259,7 +259,7 @@ index 034d247..73d8686 100644
              ],
              "authors": [
                  {
-@@ -1011,12 +1014,12 @@
+@@ -1084,12 +1087,12 @@
                  }
              ],
              "description": "Database Schema migrations using Doctrine DBAL",
@@ -274,7 +274,7 @@ index 034d247..73d8686 100644
          },
          {
              "name": "doctrine/orm",
-@@ -1319,6 +1322,83 @@
+@@ -1392,6 +1395,83 @@
              ],
              "time": "2019-12-18T15:40:05+00:00"
          },
@@ -358,7 +358,7 @@ index 034d247..73d8686 100644
          {
              "name": "incenteev/composer-parameter-handler",
              "version": "v2.1.2",
-@@ -1730,29 +1810,33 @@
+@@ -1755,29 +1835,33 @@
          },
          {
              "name": "paragonie/random_compat",
@@ -399,7 +399,7 @@ index 034d247..73d8686 100644
              "notification-url": "https://packagist.org/downloads/",
              "license": [
                  "MIT"
-@@ -1771,7 +1855,7 @@
+@@ -1796,7 +1880,7 @@
                  "pseudorandom",
                  "random"
              ],
